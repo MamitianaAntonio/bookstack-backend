@@ -1,4 +1,7 @@
 package com.bookstack.backend.repository;
 
-public interface LibraryRepository {
+import java.util.UUID;
+
+public interface LibraryRepository extends JpaRepository<Library, UUID>{
+    List<Library> findByName(String name);
 }
