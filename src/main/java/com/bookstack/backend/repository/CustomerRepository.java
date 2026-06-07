@@ -1,4 +1,9 @@
 package com.bookstack.backend.repository;
 
-public interface CustomerRepository {
+import java.util.UUID;
+
+public interface CustomerRepository extends JpaRepository<Customer, UUID>{
+    Optional<Customer> findByEmail(String email);
+    Optional<Customer> findByPhone(String phone);
+    List<Customer> findByLastName(String name);
 }
