@@ -9,8 +9,9 @@ plugins {
     id 'org.openapi.generator' version '7.7.0'
 
     id 'jacoco'
+    id 'org.jetbrains.kotlin.jvm'
 
-    
+
 }
 
 jacoco {
@@ -26,8 +27,6 @@ repositories {
 
 java {
     group = 'com.bookstack.backend'
-    sourceCompatibility = '21'
-    targetCompatibility = '21'
 }
 
 configurations {
@@ -147,7 +146,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
     testImplementation 'org.testcontainers:testcontainers-junit-jupiter:2.0.2'
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
 
-
+}
+kotlin {
+    jvmToolchain(21)
 }
