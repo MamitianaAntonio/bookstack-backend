@@ -12,9 +12,9 @@ public interface BookRepository extends JpaRepository<Book, UUID>{
     Optional<Book> findByIsbn(String isbn);
     List<Book> findByPublishedAtAfter(LocalDate date);
 
-    @Query("SELECT b FROM book b JOIN b.genres g WHERE g.name = :genre")
+    @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.name = :genre")
     List<Book> findByGenre(@Param("genre") String genre);
 
-    @Query("SELECT b FROM book b WHERE b.title ILIKE %:keyword% OR b.summary ILIKE %:keyword%")
+    @Query("SELECT b FROM Book b WHERE b.title ILIKE %:keyword% OR b.summary ILIKE %:keyword%")
     List<Book> findByKeyword(@Param("keyword") String keyword);
 }

@@ -8,6 +8,6 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, UUID>{
     List<BookCopy> findByFormat(BookCopyFormat format);
     List<BookCopy> findByPriceLessThanEqual(BigDecimal maxPrice);
 
-    @Query("SELECT bc FROM book_copy bc WHERE bc.price BETWEEN :min AND :max")
+    @Query("SELECT bc FROM BookCopy bc WHERE bc.price BETWEEN :min AND :max")
     List<BookCopy> findByPriceRange(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 }
