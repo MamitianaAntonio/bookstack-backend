@@ -4,6 +4,7 @@ import com.bookstack.backend.enums.Format;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.awt.print.Book;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.*;
@@ -23,6 +24,9 @@ public class BookCopy {
   @Enumerated(EnumType.STRING)
   private Format format;
 
+  @Column(nullable = false)
+  private BigDecimal price;
+
   @NotNull(message = "BookCopy must belong to a library")
   @ManyToOne
   @JoinColumn(name = "library_id", nullable = false)
@@ -41,4 +45,8 @@ public class BookCopy {
   @ManyToMany(mappedBy = "bookCopies")
   @Builder.Default
   private Set<Arrival> arrivals = new HashSet<>();
+
+  @ManyToMany(mappedBy = "bookCopies")
+  @Builder.Default
+  private Set<Sale> sales = new HashSet<>();
 }
