@@ -1,12 +1,15 @@
 package com.bookstack.backend.repository;
 
-import java.awt.print.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface BookRepository extends JpaRepository<Book, UUID>{
+public interface BookRepository extends JpaRepository<Book, UUID> {
     List<Book> findByTitle(String title);
     List<Book> findByAuthorId(UUID authorId);
     Optional<Book> findByIsbn(String isbn);

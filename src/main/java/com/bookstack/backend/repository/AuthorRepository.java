@@ -1,5 +1,8 @@
 package com.bookstack.backend.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.UUID;
 
 public interface AuthorRepository extends JpaRepository<Author, UUID> {
