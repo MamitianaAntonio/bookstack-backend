@@ -1,14 +1,13 @@
 package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Set;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -29,6 +28,7 @@ public class Book {
   private String isbn;
 
   @OneToMany(mappedBy = "book")
+  @Builder.Default
   private List<BookCopy> bookCopies = new ArrayList<>();
 
   @ManyToMany
@@ -36,6 +36,14 @@ public class Book {
       name = "book_genre",
       joinColumns = @JoinColumn(name = "book_id"),
       inverseJoinColumns = @JoinColumn(name = "genre_id"))
-  @NotEmpty(message = "Book must have at least one genre")
-  private List<Genre> genres = new ArrayList<>();
+  @Builder.Default
+  private Set<Genre> genres = new HashSet<>();
+
+  @ManyToMany
+  @JoinTable(
+      name = "book_author",
+      joinColumns = @JoinColumn(name = "book_id"),
+      inverseJoinColumns = @JoinColumn(name = "author_id"))
+  @Builder.Default
+  private Set<Author> authors = new HashSet<>();
 }

@@ -1,13 +1,11 @@
 package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -24,5 +22,6 @@ public class Genre {
   private String description;
 
   @ManyToMany(mappedBy = "genres")
-  private List<Book> books = new ArrayList<>();
+  @Builder.Default
+  private Set<Book> books = new HashSet<>();
 }

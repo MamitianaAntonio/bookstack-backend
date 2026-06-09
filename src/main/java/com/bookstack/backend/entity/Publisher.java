@@ -1,14 +1,11 @@
 package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -32,6 +29,6 @@ public class Publisher {
   private String location;
 
   @OneToMany(mappedBy = "publisher")
-  @NotEmpty(message = "A publisher must have published one book at least")
+  @Builder.Default
   private List<BookCopy> bookCopies = new ArrayList<>();
 }

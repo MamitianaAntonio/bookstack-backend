@@ -1,15 +1,12 @@
 package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -30,6 +27,6 @@ public class Library {
   private LocalTime closingTime;
 
   @OneToMany(mappedBy = "library")
-  @NotEmpty(message = "A library must have at least one book")
+  @Builder.Default
   private List<BookCopy> bookCopies = new ArrayList<>();
 }

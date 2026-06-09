@@ -2,12 +2,13 @@ package com.bookstack.backend.entity;
 
 import com.bookstack.backend.enums.Format;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.awt.print.Book;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -19,17 +20,25 @@ public class BookCopy {
   private String id;
 
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private Format format;
 
+  @NotNull(message = "BookCopy must belong to a library")
   @ManyToOne
-  @JoinColumn(name = "library_id")
+  @JoinColumn(name = "library_id", nullable = false)
   private Library library;
 
+  @NotNull(message = "BookCopy must be linked to a book")
   @ManyToOne
-  @JoinColumn(name = "book_id")
+  @JoinColumn(name = "book_id", nullable = false)
   private Book book;
 
+  @NotNull(message = "BookCopy must have a publisher")
   @ManyToOne
-  @JoinColumn(name = "publisher_id")
+  @JoinColumn(name = "publisher_id", nullable = false)
   private Publisher publisher;
+
+  @ManyToMany(mappedBy = "bookCopies")
+  @Builder.Default
+  private Set<Arrival> arrivals = new HashSet<>();
 }
