@@ -18,6 +18,7 @@ public class BookCopy {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @Column(nullable = false)
   private Format format;
 
   @ManyToOne
