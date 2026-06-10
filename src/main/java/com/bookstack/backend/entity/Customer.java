@@ -1,7 +1,6 @@
 package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
@@ -12,21 +11,23 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Library {
+public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   @Column(nullable = false)
-  private String name;
+  private String firstName;
 
-  @Column(nullable = false)
-  private String location;
+  private String lastName;
 
-  private LocalTime openingTime;
-  private LocalTime closingTime;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-  @OneToMany(mappedBy = "library")
+  @Column(unique = true)
+  private String phone;
+
+  @OneToMany(mappedBy = "customer")
   @Builder.Default
-  private List<BookCopy> bookCopies = new ArrayList<>();
+  private List<Sale> sales = new ArrayList<>();
 }
