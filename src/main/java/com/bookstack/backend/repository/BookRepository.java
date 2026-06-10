@@ -1,7 +1,6 @@
 package com.bookstack.backend.repository;
 
 import com.bookstack.backend.entity.Book;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
   List<Book> findByAuthorId(String authorId);
 
   Optional<Book> findByIsbn(String isbn);
-  
+
   @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.name = :genre")
   List<Book> findByGenre(@Param("genre") String genre);
 
