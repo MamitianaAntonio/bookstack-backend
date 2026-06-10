@@ -7,9 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface GenreRepository extends JpaRepository<Genre, UUID> {
+public interface GenreRepository extends JpaRepository<Genre, String> {
     Optional<Genre> findByName(String name);
 
     @Query("SELECT g FROM Genre g WHERE g.description ILIKE %:keyword%")

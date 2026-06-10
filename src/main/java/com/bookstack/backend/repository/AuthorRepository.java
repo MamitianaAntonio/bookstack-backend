@@ -8,9 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface AuthorRepository extends JpaRepository<Author, UUID> {
+public interface AuthorRepository extends JpaRepository<Author, String> {
     List<Author> findByNationality(String nationality);
 
     Optional<Author> findByEmail(String email);

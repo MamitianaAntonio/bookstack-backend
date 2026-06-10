@@ -4,13 +4,12 @@ import com.bookstack.backend.entity.BookCopy;
 import com.bookstack.backend.enums.Format;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface BookCopyRepository extends JpaRepository<BookCopy, UUID> {
-  List<BookCopy> findByBookId(UUID bookId);
+public interface BookCopyRepository extends JpaRepository<BookCopy, String> {
+  List<BookCopy> findByBookId(String bookId);
 
   List<BookCopy> findByFormat(Format format);
 

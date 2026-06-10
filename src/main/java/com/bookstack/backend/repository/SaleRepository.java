@@ -10,10 +10,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
-public interface SaleRepository extends JpaRepository<Sale, UUID> {
-    List<Sale> findByCustomerId(UUID customerId);
+public interface SaleRepository extends JpaRepository<Sale, String> {
+    List<Sale> findByCustomerId(String customerId);
 
     List<Sale> findBySaleDateBetween(Timestamp start, Timestamp end);
 
