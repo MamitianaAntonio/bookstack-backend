@@ -14,9 +14,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
   List<Book> findByAuthorId(String authorId);
 
   Optional<Book> findByIsbn(String isbn);
-
-  List<Book> findByPublishedAtAfter(LocalDate date);
-
+  
   @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.name = :genre")
   List<Book> findByGenre(@Param("genre") String genre);
 
