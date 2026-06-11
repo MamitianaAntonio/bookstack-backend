@@ -3,7 +3,7 @@ package com.bookstack.backend.entity;
 import com.bookstack.backend.enums.Format;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.awt.print.Book;
+import com.bookstack.backend.entity.Book;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
