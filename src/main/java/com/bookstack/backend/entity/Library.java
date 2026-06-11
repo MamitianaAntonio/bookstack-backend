@@ -2,8 +2,8 @@ package com.bookstack.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.*;
 
 @Builder
@@ -26,7 +26,11 @@ public class Library {
   private LocalTime openingTime;
   private LocalTime closingTime;
 
-  @OneToMany(mappedBy = "library")
+  @ManyToMany
+  @JoinTable(
+      name = "library_book_copy",
+      joinColumns = @JoinColumn(name = "library_id"),
+      inverseJoinColumns = @JoinColumn(name = "book_copy_id"))
   @Builder.Default
-  private List<BookCopy> bookCopies = new ArrayList<>();
+  private Set<BookCopy> bookCopies = new HashSet<BookCopy>();
 }

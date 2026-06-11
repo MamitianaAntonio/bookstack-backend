@@ -4,4 +4,5 @@ public enum Status {
   PENDING,
   COMPLETED,
   CANCELLED,
+  BOOKED
 }
