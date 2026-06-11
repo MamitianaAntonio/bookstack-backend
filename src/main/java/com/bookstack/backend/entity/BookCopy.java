@@ -27,10 +27,8 @@ public class BookCopy {
   @Column(nullable = false)
   private BigDecimal price;
 
-  @NotNull(message = "BookCopy must belong to a library")
-  @ManyToOne
-  @JoinColumn(name = "library_id", nullable = false)
-  private Library library;
+  @ManyToMany(mappedBy = "bookCopies")
+  private Set<Library> libraries = new HashSet<>();
 
   @NotNull(message = "BookCopy must be linked to a book")
   @ManyToOne

@@ -21,6 +21,7 @@ public class Arrival {
   private Timestamp arrivalDate;
   private Condition condition;
 
+  @ManyToMany
   @JoinTable(
       name = "arrival_book_copy",
       joinColumns = @JoinColumn(name = "arrival_id"),
