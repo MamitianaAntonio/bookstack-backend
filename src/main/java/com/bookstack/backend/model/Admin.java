@@ -10,8 +10,14 @@ public final class Admin extends User {
   private Role role;
 
   public Admin(
-      String id, String firstName, String lastName, String email, String phoneNumber, Role role) {
-    super(id, firstName, lastName, email, phoneNumber);
+      String id,
+      String firstName,
+      String lastName,
+      String email,
+      String phoneNumber,
+      String password,
+      Role role) {
+    super(id, firstName, lastName, email, phoneNumber, password);
     this.role = role;
   }
 }

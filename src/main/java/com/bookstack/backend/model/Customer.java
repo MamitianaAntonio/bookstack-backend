@@ -15,9 +15,10 @@ public final class Customer extends User {
       String lastName,
       String email,
       String phoneNumber,
-      String location,
+      String password,
+      String address,
       List<Sale> sales) {
-    super(id, firstName, lastName, email, phoneNumber);
-    this.address = location;
+    super(id, firstName, lastName, email, phoneNumber, password);
+    this.address = address;
   }
 }

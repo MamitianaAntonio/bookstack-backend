@@ -10,4 +10,5 @@ public abstract sealed class User permits Admin, Customer {
   private final String lastName;
   private final String email;
   private final String phoneNumber;
+  private final String password;
 }

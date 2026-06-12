@@ -15,8 +15,8 @@ import lombok.*;
 public class Sale {
   private String id;
   private Instant saleDate;
-  private Customer customer;
   private PaymentMethod paymentMethod;
   private Status status;
+  private Customer customer;
   private List<SaleItem> saleItems;
 }

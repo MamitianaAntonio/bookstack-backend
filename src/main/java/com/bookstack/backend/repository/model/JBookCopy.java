@@ -29,4 +29,14 @@ public class JBookCopy {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "book_id", nullable = false)
   private JBook book;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "publisher_id", nullable = false)
+  private JPublisher publisher;
+
+  @OneToMany(mappedBy = "bookCopy", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<JArrivalItem> arrivalItems;
+
+  @OneToMany(mappedBy = "bookCopy", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<JSaleItem> saleItems;
 }
