@@ -18,7 +18,7 @@ public interface SaleRepository extends JpaRepository<Sale, String> {
   List<Sale> findByStatus(Status status);
 
   @Query(
-      """              
+      """
       SELECT SUM(bc.price) FROM Sale s
       JOIN s.bookCopies bc
       WHERE s.status = 'COMPLETED'

@@ -1,7 +1,6 @@
 package com.bookstack.backend.repository;
 
 import com.bookstack.backend.entity.Author;
-import com.bookstack.backend.entity.Book;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
