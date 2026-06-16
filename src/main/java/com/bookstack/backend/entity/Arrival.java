@@ -1,7 +1,8 @@
 package com.bookstack.backend.entity;
 
+import com.bookstack.backend.enums.Condition;
 import jakarta.persistence.*;
-import java.time.LocalTime;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.*;
@@ -12,25 +13,19 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Library {
+public class Arrival {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(nullable = false)
-  private String name;
-
-  @Column(nullable = false)
-  private String location;
-
-  private LocalTime openingTime;
-  private LocalTime closingTime;
+  private Timestamp arrivalDate;
+  private Condition condition;
 
   @ManyToMany
   @JoinTable(
-      name = "library_book_copy",
-      joinColumns = @JoinColumn(name = "library_id"),
+      name = "arrival_book_copy",
+      joinColumns = @JoinColumn(name = "arrival_id"),
       inverseJoinColumns = @JoinColumn(name = "book_copy_id"))
   @Builder.Default
-  private Set<BookCopy> bookCopies = new HashSet<BookCopy>();
+  private Set<BookCopy> bookCopies = new HashSet<>();
 }

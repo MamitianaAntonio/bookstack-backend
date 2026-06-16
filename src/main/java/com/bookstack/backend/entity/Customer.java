@@ -11,24 +11,23 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Publisher {
+public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   @Column(nullable = false)
-  private String name;
+  private String firstName;
+
+  private String lastName;
 
   @Column(nullable = false, unique = true)
   private String email;
 
   @Column(unique = true)
-  private String website;
+  private String phone;
 
-  @Column(nullable = false)
-  private String location;
-
-  @OneToMany(mappedBy = "publisher")
+  @OneToMany(mappedBy = "customer")
   @Builder.Default
-  private List<BookCopy> bookCopies = new ArrayList<>();
+  private List<Sale> sales = new ArrayList<>();
 }
