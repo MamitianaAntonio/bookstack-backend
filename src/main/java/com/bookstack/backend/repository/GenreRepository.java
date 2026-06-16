@@ -11,6 +11,6 @@ import org.springframework.data.repository.query.Param;
 public interface GenreRepository extends JpaRepository<JGenre, String> {
   Optional<JGenre> findByName(String name);
 
-  @Query("SELECT g FROM Genre g WHERE g.description ILIKE %:keyword%")
+  @Query("SELECT g FROM JGenre g WHERE g.description ILIKE %:keyword%")
   List<JGenre> findByKeyword(@Param("keyword") String keyword);
 }

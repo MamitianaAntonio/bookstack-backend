@@ -19,8 +19,10 @@ public interface SaleRepository extends JpaRepository<JSale, String> {
 
   @Query(
       """
-      SELECT SUM(bc.price) FROM Sale s
-      JOIN s.bookCopies bc
+      SELECT SUM(ph.price) FROM JSale s
+      JOIN s.saleItems si
+            JOIN si.bookCopy bc
+                  JOIN bc.priceHistories ph
       WHERE s.status = 'COMPLETED'
       AND s.saleDate BETWEEN :start AND :end
       """)

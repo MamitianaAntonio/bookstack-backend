@@ -13,18 +13,18 @@ public interface BookRepository extends JpaRepository<JBook, String> {
 
   Optional<JBook> findByIsbn(String isbn);
 
-  @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.id = :authorId")
+  @Query("SELECT b FROM JBook b JOIN b.authors a WHERE a.id = :authorId")
   List<JBook> findByAuthorId(@Param("authorId") String authorId);
 
-  @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.name = :genre")
+  @Query("SELECT b FROM JBook b JOIN b.genres g WHERE g.name = :genre")
   List<JBook> findByGenre(@Param("genre") String genre);
 
-  @Query("SELECT b FROM Book b WHERE b.title ILIKE %:keyword% OR b.summary ILIKE %:keyword%")
+  @Query("SELECT b FROM JBook b WHERE b.title ILIKE %:keyword% OR b.summary ILIKE %:keyword%")
   List<JBook> findByKeyword(@Param("keyword") String keyword);
 
   @Query(
       """
-                  SELECT b FROM Book b
+                  SELECT b FROM JBook b
                   LEFT JOIN b.authors a
                   LEFT JOIN b.genres g
                   WHERE (:authorId IS NULL OR a.id = :authorId)

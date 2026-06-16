@@ -13,9 +13,9 @@ public interface AuthorRepository extends JpaRepository<JAuthor, String> {
 
   Optional<JAuthor> findByEmail(String email);
 
-  @Query("SELECT a FROM Author a JOIN a.books b WHERE b.id = :bookId")
+  @Query("SELECT a FROM JAuthor a JOIN a.books b WHERE b.id = :bookId")
   List<JAuthor> findAuthorByBook(@Param("bookId") String bookId);
 
-  @Query("SELECT a from Author a WHERE a.nickname ILIKE %:name%")
+  @Query("SELECT a from JAuthor a WHERE a.firstName ILIKE %:name%")
   List<JAuthor> findAuthorByName(@Param("name") String name);
 }
