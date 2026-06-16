@@ -28,4 +28,10 @@ public class BookService {
         return mapper.toModel(repository.saveAll(mapper.toEntity(toSave)));
     }
 
+    public Book update(String id, Book book) {
+        repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
+        book.setId(id);
+        return mapper.toModel(repository.save(mapper.toEntity(book)));
+    }
 }

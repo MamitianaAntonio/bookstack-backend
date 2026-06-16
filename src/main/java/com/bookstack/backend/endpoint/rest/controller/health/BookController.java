@@ -26,4 +26,9 @@ public class BookController {
     public List<Book> create(@RequestBody List<Book> toSave) {
         return service.create(toSave);
     }
+
+    @PutMapping("/books/{id}")
+    public Book update(@PathVariable String id, @RequestBody Book book) {
+        return service.update(id, book);
+    }
 }
