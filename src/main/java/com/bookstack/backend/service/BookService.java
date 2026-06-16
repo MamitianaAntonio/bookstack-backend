@@ -34,4 +34,10 @@ public class BookService {
         book.setId(id);
         return mapper.toModel(repository.save(mapper.toEntity(book)));
     }
+
+    public void delete(String id) {
+        repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
+        repository.deleteById(id);
+    }
 }
