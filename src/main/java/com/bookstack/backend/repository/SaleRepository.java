@@ -3,8 +3,7 @@ package com.bookstack.backend.repository;
 import com.bookstack.backend.repository.model.JSale;
 import com.bookstack.backend.enums.Status;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 public interface SaleRepository extends JpaRepository<JSale, String> {
   List<JSale> findByCustomerId(String customerId);
 
-  List<JSale> findBySaleDateBetween(Timestamp start, Timestamp end);
+  List<JSale> findBySaleDateBetween(Instant saleDate, Instant saleDate2);
 
   List<JSale> findByStatus(Status status);
 
@@ -26,5 +25,5 @@ public interface SaleRepository extends JpaRepository<JSale, String> {
       WHERE s.status = 'COMPLETED'
       AND s.saleDate BETWEEN :start AND :end
       """)
-  BigDecimal getTotalRevenue(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+  BigDecimal getTotalRevenue(@Param("start") Instant start, @Param("end") Instant end);
 }
