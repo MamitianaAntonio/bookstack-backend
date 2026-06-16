@@ -1,5 +1,6 @@
 package com.bookstack.backend.repository;
 
+import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.repository.model.JAuthor;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface AuthorRepository extends JpaRepository<JAuthor, String> {
-  List<JAuthor> findByNationality(String nationality);
+  List<JAuthor> findByLanguage(Language language);
 
   Optional<JAuthor> findByEmail(String email);
 
