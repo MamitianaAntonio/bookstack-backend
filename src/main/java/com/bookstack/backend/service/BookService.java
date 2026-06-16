@@ -23,4 +23,9 @@ public class BookService {
                 repository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found")));
     }
+
+    public List<Book> create(List<Book> toSave) {
+        return mapper.toModel(repository.saveAll(mapper.toEntity(toSave)));
+    }
+
 }

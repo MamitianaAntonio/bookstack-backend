@@ -22,4 +22,8 @@ public class BookController {
         return service.findById(id);
     }
 
+    @PostMapping("/books")
+    public List<Book> create(@RequestBody List<Book> toSave) {
+        return service.create(toSave);
+    }
 }
