@@ -2,7 +2,7 @@ package com.bookstack.backend.entity;
 
 import com.bookstack.backend.enums.Condition;
 import jakarta.persistence.*;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.*;

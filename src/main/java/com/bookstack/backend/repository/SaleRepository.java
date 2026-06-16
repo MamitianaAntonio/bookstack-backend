@@ -19,11 +19,10 @@ public interface SaleRepository extends JpaRepository<Sale, String> {
 
   @Query(
       """
-      SELECT SUM(bc.price) FROM Sale s JOIN s.
-      bookCopies bc
-      WHERE s.status ='COMPLETED'
-      AND s.
-      saleDate BETWEEN :
-      start AND :end""")
+      SELECT SUM(bc.price) FROM Sale s
+      JOIN s.bookCopies bc
+      WHERE s.status = 'COMPLETED'
+      AND s.saleDate BETWEEN :start AND :end
+      """)
   BigDecimal getTotalRevenue(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

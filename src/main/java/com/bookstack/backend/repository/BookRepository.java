@@ -10,9 +10,10 @@ import org.springframework.data.repository.query.Param;
 public interface BookRepository extends JpaRepository<Book, String> {
   List<Book> findByTitle(String title);
 
-  List<Book> findByAuthorId(String authorId);
-
   Optional<Book> findByIsbn(String isbn);
+
+  @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.id = :authorId")
+  List<Book> findByAuthorId(@Param("authorId") String authorId);
 
   @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.name = :genre")
   List<Book> findByGenre(@Param("genre") String genre);
