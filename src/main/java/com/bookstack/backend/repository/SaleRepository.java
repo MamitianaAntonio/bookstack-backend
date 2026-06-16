@@ -1,6 +1,6 @@
 package com.bookstack.backend.repository;
 
-import com.bookstack.backend.entity.Sale;
+import com.bookstack.backend.repository.model.JSale;
 import com.bookstack.backend.enums.Status;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -10,12 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface SaleRepository extends JpaRepository<Sale, String> {
-  List<Sale> findByCustomerId(String customerId);
+public interface SaleRepository extends JpaRepository<JSale, String> {
+  List<JSale> findByCustomerId(String customerId);
 
-  List<Sale> findBySaleDateBetween(Timestamp start, Timestamp end);
+  List<JSale> findBySaleDateBetween(Timestamp start, Timestamp end);
 
-  List<Sale> findByStatus(Status status);
+  List<JSale> findByStatus(Status status);
 
   @Query(
       """
