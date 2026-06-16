@@ -1,10 +1,9 @@
 package com.bookstack.backend.repository;
 
 import com.bookstack.backend.enums.Format;
+import com.bookstack.backend.repository.model.JBookCopy;
 import java.math.BigDecimal;
 import java.util.List;
-
-import com.bookstack.backend.repository.model.JBookCopy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +13,7 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
 
   List<JBookCopy> findByFormat(Format format);
 
-  @Query("SELECT bc FROM JBookCopy bc JOIN bc.priceHistories ph WHERE ph.price BETWEEN :min AND :max")
+  @Query(
+      "SELECT bc FROM JBookCopy bc JOIN bc.priceHistories ph WHERE ph.price BETWEEN :min AND :max")
   List<JBookCopy> findByPriceRange(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 }

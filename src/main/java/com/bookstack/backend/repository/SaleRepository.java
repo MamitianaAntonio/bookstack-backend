@@ -1,7 +1,7 @@
 package com.bookstack.backend.repository;
 
-import com.bookstack.backend.repository.model.JSale;
 import com.bookstack.backend.enums.Status;
+import com.bookstack.backend.repository.model.JSale;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
