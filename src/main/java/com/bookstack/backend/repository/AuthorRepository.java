@@ -1,20 +1,21 @@
 package com.bookstack.backend.repository;
 
-import com.bookstack.backend.entity.Author;
+import com.bookstack.backend.enums.Language;
+import com.bookstack.backend.repository.model.JAuthor;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface AuthorRepository extends JpaRepository<Author, String> {
-  List<Author> findByNationality(String nationality);
+public interface AuthorRepository extends JpaRepository<JAuthor, String> {
+  List<JAuthor> findByLanguage(Language language);
 
-  Optional<Author> findByEmail(String email);
+  Optional<JAuthor> findByEmail(String email);
 
-  @Query("SELECT a FROM Author a JOIN a.books b WHERE b.id = :bookId")
-  List<Author> findAuthorByBook(@Param("bookId") String bookId);
+  @Query("SELECT a FROM JAuthor a JOIN a.books b WHERE b.id = :bookId")
+  List<JAuthor> findAuthorByBook(@Param("bookId") String bookId);
 
-  @Query("SELECT a from Author a WHERE a.nickname ILIKE %:name%")
-  List<Author> findAuthorByName(@Param("name") String name);
+  @Query("SELECT a from JAuthor a WHERE a.firstName ILIKE %:name%")
+  List<JAuthor> findAuthorByName(@Param("name") String name);
 }

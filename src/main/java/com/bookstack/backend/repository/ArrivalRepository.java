@@ -1,13 +1,13 @@
 package com.bookstack.backend.repository;
 
-import com.bookstack.backend.entity.Arrival;
 import com.bookstack.backend.enums.Condition;
-import java.sql.Timestamp;
+import com.bookstack.backend.repository.model.JArrival;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ArrivalRepository extends JpaRepository<Arrival, String> {
-  List<Arrival> findByArrivalDateBetween(Timestamp start, Timestamp end);
+public interface ArrivalRepository extends JpaRepository<JArrival, String> {
+  List<JArrival> findByArrivalTimeBetween(Instant arrivalTime, Instant arrivalTime2);
 
-  List<Arrival> findByCondition(Condition condition);
+  List<JArrival> findByCondition(Condition condition);
 }
