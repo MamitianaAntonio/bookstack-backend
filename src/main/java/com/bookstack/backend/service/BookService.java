@@ -5,15 +5,12 @@ import com.bookstack.backend.mapper.BookMapper;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.repository.AuthorRepository;
 import com.bookstack.backend.repository.BookRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.bookstack.backend.repository.GenreRepository;
 import com.bookstack.backend.repository.model.JAuthor;
 import com.bookstack.backend.repository.model.JBook;
 import com.bookstack.backend.repository.model.JGenre;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +67,9 @@ public class BookService {
 
   @Transactional
   public Book update(String id, BookRequestDTO book) {
-    JBook existingBook = repository.findById(id)
+    JBook existingBook =
+        repository
+            .findById(id)
             .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
 
     existingBook.setTitle(book.getTitle());
