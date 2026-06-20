@@ -40,6 +40,10 @@ public class BookService {
     List<JBook> managedBooks = new ArrayList<>();
 
     for (BookRequestDTO dto : booksToSave) {
+      if (repository.findByIsbn(dto.getIsbn()).isPresent()) {
+        throw new RuntimeException("Book with isbn " + dto.getIsbn() + " already exists");
+      }
+
       JBook jBook = new JBook();
       jBook.setTitle(dto.getTitle());
       jBook.setSummary(dto.getSummary());
@@ -72,6 +76,15 @@ public class BookService {
         repository
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
+
+    repository
+        .findByIsbn(book.getIsbn())
+        .ifPresent(
+            existing -> {
+              if (!existing.getId().equals(id)) {
+                throw new RuntimeException("Book with isbn " + book.getIsbn() + " already exists");
+              }
+            });
 
     existingBook.setTitle(book.getTitle());
     existingBook.setSummary(book.getSummary());
