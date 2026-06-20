@@ -1,6 +1,7 @@
 package com.bookstack.backend.service;
 
 import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookMapper;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.repository.AuthorRepository;
@@ -31,7 +32,7 @@ public class BookService {
     return mapper.toModel(
         repository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found")));
+            .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found")));
   }
 
   @Transactional
@@ -47,7 +48,7 @@ public class BookService {
       if (dto.getAuthorIds() != null && !dto.getAuthorIds().isEmpty()) {
         List<JAuthor> authors = authorRepository.findAllById(dto.getAuthorIds());
         if (authors.size() != dto.getAuthorIds().size()) {
-          throw new RuntimeException("Some authors not found");
+          throw new NotFoundException("Some authors not found");
         }
         jBook.setAuthors(authors);
       }
@@ -55,7 +56,7 @@ public class BookService {
       if (dto.getGenreIds() != null && !dto.getGenreIds().isEmpty()) {
         List<JGenre> genres = genreRepository.findAllById(dto.getGenreIds());
         if (genres.size() != dto.getGenreIds().size()) {
-          throw new RuntimeException("Some genres not found");
+          throw new NotFoundException("Some genres not found");
         }
         jBook.setGenres(genres);
       }
@@ -70,7 +71,7 @@ public class BookService {
     JBook existingBook =
         repository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
+            .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
 
     existingBook.setTitle(book.getTitle());
     existingBook.setSummary(book.getSummary());
@@ -79,7 +80,7 @@ public class BookService {
     if (book.getAuthorIds() != null) {
       List<JAuthor> authors = authorRepository.findAllById(book.getAuthorIds());
       if (authors.size() != book.getAuthorIds().size()) {
-        throw new RuntimeException("Some authors not found");
+        throw new NotFoundException("Some authors not found");
       }
       existingBook.setAuthors(authors);
     }
@@ -87,7 +88,7 @@ public class BookService {
     if (book.getGenreIds() != null) {
       List<JGenre> genres = genreRepository.findAllById(book.getGenreIds());
       if (genres.size() != book.getGenreIds().size()) {
-        throw new RuntimeException("Some genres not found");
+        throw new NotFoundException("Some genres not found");
       }
       existingBook.setGenres(genres);
     }
@@ -98,7 +99,7 @@ public class BookService {
   public void delete(String id) {
     repository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
     repository.deleteById(id);
   }
 }
