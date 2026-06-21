@@ -11,4 +11,11 @@ public interface PublisherRepository extends JpaRepository<JPublisher, String> {
   Optional<JPublisher> findByWebsite(String website);
 
   List<JPublisher> findByLocation(String location);
+
+  Optional<JPublisher> findByEmail(String email);
+
+  Boolean existsByEmail(String email);
+
+  Boolean existsByWebsite(String website);
+
 }
