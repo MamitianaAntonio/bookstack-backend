@@ -1,5 +1,6 @@
 package com.bookstack.backend.endpoint.rest.controller.health;
 
+import com.bookstack.backend.dto.BookRequestDTO;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.service.BookService;
 import java.util.List;
@@ -22,12 +23,12 @@ public class BookController {
   }
 
   @PostMapping("/books")
-  public List<Book> create(@RequestBody List<Book> toSave) {
+  public List<Book> create(@RequestBody List<BookRequestDTO> toSave) {
     return service.create(toSave);
   }
 
   @PutMapping("/books/{id}")
-  public Book update(@PathVariable String id, @RequestBody Book book) {
+  public Book update(@PathVariable String id, @RequestBody BookRequestDTO book) {
     return service.update(id, book);
   }
 
