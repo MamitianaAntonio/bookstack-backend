@@ -25,27 +25,27 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler({
-          MethodArgumentNotValidException.class,
-          MethodArgumentTypeMismatchException.class
+    MethodArgumentNotValidException.class,
+    MethodArgumentTypeMismatchException.class
   })
   public ResponseEntity<ExceptionBody> handleMethodArgumentTypeMismatchOrNotValidException(
-          MethodArgumentNotValidException exception, HttpServletRequest request) {
+      MethodArgumentNotValidException exception, HttpServletRequest request) {
     return ResponseEntity.badRequest()
-            .body(
-                    new ExceptionBody(
-                            400, "Bad Request", exception.getMessage(), request.getPathInfo(), Instant.now()));
+        .body(
+            new ExceptionBody(
+                400, "Bad Request", exception.getMessage(), request.getPathInfo(), Instant.now()));
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ExceptionBody> handleException(
-          Exception exception, HttpServletRequest request) {
+      Exception exception, HttpServletRequest request) {
     return ResponseEntity.status(500)
-            .body(
-                    new ExceptionBody(
-                            500,
-                            "An internal error has occurred",
-                            exception.getMessage(),
-                            request.getPathInfo(),
-                            Instant.now()));
+        .body(
+            new ExceptionBody(
+                500,
+                "An internal error has occurred",
+                exception.getMessage(),
+                request.getPathInfo(),
+                Instant.now()));
   }
 }

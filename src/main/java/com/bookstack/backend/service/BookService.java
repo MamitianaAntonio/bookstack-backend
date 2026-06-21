@@ -83,7 +83,8 @@ public class BookService {
         .ifPresent(
             existing -> {
               if (!existing.getId().equals(id)) {
-                throw new AlreadyExistsException("Book with isbn " + book.getIsbn() + " already exists");
+                throw new AlreadyExistsException(
+                    "Book with isbn " + book.getIsbn() + " already exists");
               }
             });
 
