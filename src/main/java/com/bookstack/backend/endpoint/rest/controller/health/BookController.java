@@ -36,6 +36,7 @@ public class BookController {
     return service.update(id, book);
   }
 
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/books/{id}")
   public void delete(@PathVariable String id) {
     service.delete(id);

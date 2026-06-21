@@ -1,10 +1,13 @@
 package com.bookstack.backend.endpointControllertest;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.bookstack.backend.dto.BookRequestDTO;
 import com.bookstack.backend.endpoint.rest.controller.health.BookController;
 import com.bookstack.backend.enums.Language;
+import com.bookstack.backend.exception.GlobalExceptionHandler;
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.model.Author;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.model.Genre;
@@ -24,7 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest({BookController.class})
+@WebMvcTest({BookController.class, GlobalExceptionHandler.class})
 public class BookControllerTest {
   @Autowired private MockMvc mockMvc;
 
@@ -39,6 +42,7 @@ public class BookControllerTest {
   private Genre fiction;
   private Genre education;
   private BookRequestDTO bookRequestDTO;
+  private BookRequestDTO updateDTO;
 
   @BeforeEach
   void setUp() {
@@ -106,6 +110,15 @@ public class BookControllerTest {
             .authorIds(List.of(antoine.getId()))
             .genreIds(List.of(fiction.getId()))
             .build();
+
+    updateDTO =
+        BookRequestDTO.builder()
+            .title("Le Petit Prince Updated")
+            .summary("Updated summary")
+            .isbn("978-0156012195")
+            .authorIds(List.of(antoine.getId()))
+            .genreIds(List.of(fiction.getId()))
+            .build();
   }
 
   @Test
@@ -139,5 +152,46 @@ public class BookControllerTest {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Le Petit Prince"));
+  }
+
+  @Test
+  void updateBook_shouldReturn_200() throws Exception {
+    when(bookService.update(ArgumentMatchers.eq(lePetitPrince.getId()), ArgumentMatchers.any()))
+        .thenReturn(lePetitPrince);
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put("/books/" + lePetitPrince.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateDTO)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Le Petit Prince"));
+  }
+
+  @Test
+  void updateBook_shouldReturn_404_whenBookNotFound() throws Exception {
+
+    when(bookService.update(ArgumentMatchers.eq("wrong-id"), ArgumentMatchers.any()))
+        .thenThrow(new NotFoundException("Book with id wrong-id not found"));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put("/books/wrong-id")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateDTO)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
+
+  @Test
+  void deleteBook_shouldReturn_204() throws Exception {
+
+    doNothing().when(bookService).delete(lePetitPrince.getId());
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.delete("/books/" + lePetitPrince.getId()))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 }
