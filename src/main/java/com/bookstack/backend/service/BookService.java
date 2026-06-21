@@ -1,6 +1,7 @@
 package com.bookstack.backend.service;
 
 import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.exception.AlreadyExistsException;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookMapper;
 import com.bookstack.backend.model.Book;
@@ -41,7 +42,7 @@ public class BookService {
 
     for (BookRequestDTO dto : booksToSave) {
       if (repository.findByIsbn(dto.getIsbn()).isPresent()) {
-        throw new RuntimeException("Book with isbn " + dto.getIsbn() + " already exists");
+        throw new AlreadyExistsException("Book with isbn " + dto.getIsbn() + " already exists");
       }
 
       JBook jBook = new JBook();
@@ -82,7 +83,7 @@ public class BookService {
         .ifPresent(
             existing -> {
               if (!existing.getId().equals(id)) {
-                throw new RuntimeException("Book with isbn " + book.getIsbn() + " already exists");
+                throw new AlreadyExistsException("Book with isbn " + book.getIsbn() + " already exists");
               }
             });
 
