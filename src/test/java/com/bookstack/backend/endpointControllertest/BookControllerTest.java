@@ -23,109 +23,112 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest({ BookController.class })
+@WebMvcTest({BookController.class})
 public class BookControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-    @MockBean
-    private BookService bookService;
+  @MockBean private BookService bookService;
 
-    private Book lePetitPrince;
-    private Book javaPourLesNuls;
-    private Author dev;
-    private Author antoine;
-    private Genre fiction;
-    private Genre education;
+  private Book lePetitPrince;
+  private Book javaPourLesNuls;
+  private Author dev;
+  private Author antoine;
+  private Genre fiction;
+  private Genre education;
 
-    @BeforeEach
-    void setUp() {
-        antoine = Author.builder()
-                .id(UUID.randomUUID().toString())
-                .firstName("Antoine")
-                .lastName("de Saint-Exupéry")
-                .biography("French aviator and writer")
-                .language(Language.FR)
-                .email("antoine@example.com")
-                .books(List.of())
-                .build();
+  @BeforeEach
+  void setUp() {
+    antoine =
+        Author.builder()
+            .id(UUID.randomUUID().toString())
+            .firstName("Antoine")
+            .lastName("de Saint-Exupéry")
+            .biography("French aviator and writer")
+            .language(Language.FR)
+            .email("antoine@example.com")
+            .books(List.of())
+            .build();
 
-        fiction = Genre.builder()
-                .id(UUID.randomUUID().toString())
-                .name("Fiction")
-                .description("Literary fiction and storytelling")
-                .build();
+    fiction =
+        Genre.builder()
+            .id(UUID.randomUUID().toString())
+            .name("Fiction")
+            .description("Literary fiction and storytelling")
+            .build();
 
-        lePetitPrince = Book.builder()
-                .id(UUID.randomUUID().toString())
-                .title("Le Petit Prince")
-                .summary("A poetic story about friendship, love, and life lessons")
-                .isbn("978-0156012195")
-                .authors(List.of(antoine))
-                .genres(List.of(fiction))
-                .build();
+    lePetitPrince =
+        Book.builder()
+            .id(UUID.randomUUID().toString())
+            .title("Le Petit Prince")
+            .summary("A poetic story about friendship, love, and life lessons")
+            .isbn("978-0156012195")
+            .authors(List.of(antoine))
+            .genres(List.of(fiction))
+            .build();
 
-        dev = Author.builder()
-                .id(UUID.randomUUID().toString())
-                .firstName("Java")
-                .lastName("Developer")
-                .biography("Software engineer writing Java tutorials")
-                .language(Language.ENG)
-                .email("java.dev@example.com")
-                .books(List.of())
-                .build();
+    dev =
+        Author.builder()
+            .id(UUID.randomUUID().toString())
+            .firstName("Java")
+            .lastName("Developer")
+            .biography("Software engineer writing Java tutorials")
+            .language(Language.ENG)
+            .email("java.dev@example.com")
+            .books(List.of())
+            .build();
 
-        education = Genre.builder()
-                .id(UUID.randomUUID().toString())
-                .name("Education")
-                .description("Programming and learning content")
-                .build();
+    education =
+        Genre.builder()
+            .id(UUID.randomUUID().toString())
+            .name("Education")
+            .description("Programming and learning content")
+            .build();
 
-        javaPourLesNuls = Book.builder()
-                .id(UUID.randomUUID().toString())
-                .title("Java pour les nuls")
-                .summary("A beginner-friendly guide to Java programming")
-                .isbn("978-1234567890")
-                .authors(List.of(dev))
-                .genres(List.of(education))
-                .build();
-    }
+    javaPourLesNuls =
+        Book.builder()
+            .id(UUID.randomUUID().toString())
+            .title("Java pour les nuls")
+            .summary("A beginner-friendly guide to Java programming")
+            .isbn("978-1234567890")
+            .authors(List.of(dev))
+            .genres(List.of(education))
+            .build();
+  }
 
-    @Test
-    void getAllbooks_shouldReturn_ok() throws Exception {
-        when(bookService.findAll()).thenReturn(List.of(lePetitPrince, javaPourLesNuls));
+  @Test
+  void getAllbooks_shouldReturn_ok() throws Exception {
+    when(bookService.findAll()).thenReturn(List.of(lePetitPrince, javaPourLesNuls));
 
-        mockMvc
-                .perform(MockMvcRequestBuilders.get("/books"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+  }
 
-    @Test
-    void getBookById_shouldReturnBook() throws Exception {
-        when(bookService.findById(lePetitPrince.getId())).thenReturn(lePetitPrince);
+  @Test
+  void getBookById_shouldReturnBook() throws Exception {
+    when(bookService.findById(lePetitPrince.getId())).thenReturn(lePetitPrince);
 
-        mockMvc
-                .perform(MockMvcRequestBuilders.get("/books/" + lePetitPrince.getId()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Le Petit Prince"));
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books/" + lePetitPrince.getId()))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Le Petit Prince"));
+  }
 
-    @Test
-    void createBooks_shouldReturn_201() throws Exception {
-        List<Book> booksTocreate = List.of(lePetitPrince);
+  @Test
+  void createBooks_shouldReturn_201() throws Exception {
+    List<Book> booksTocreate = List.of(lePetitPrince);
 
-        when(bookService.create(ArgumentMatchers.any())).thenReturn(booksTocreate);
+    when(bookService.create(ArgumentMatchers.any())).thenReturn(booksTocreate);
 
-        mockMvc
-                .perform(
-                        MockMvcRequestBuilders.post("/books")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(booksTocreate)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Le Petit Prince"));
-    }
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(booksTocreate)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Le Petit Prince"));
+  }
 }

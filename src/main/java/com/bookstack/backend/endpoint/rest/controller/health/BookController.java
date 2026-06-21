@@ -4,7 +4,6 @@ import com.bookstack.backend.model.Book;
 import com.bookstack.backend.service.BookService;
 import java.util.List;
 import lombok.AllArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
