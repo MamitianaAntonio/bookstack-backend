@@ -2,6 +2,7 @@ package com.bookstack.backend.endpointControllertest;
 
 import static org.mockito.Mockito.when;
 
+import com.bookstack.backend.dto.BookRequestDTO;
 import com.bookstack.backend.endpoint.rest.controller.health.BookController;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.model.Author;
@@ -37,6 +38,7 @@ public class BookControllerTest {
   private Author antoine;
   private Genre fiction;
   private Genre education;
+  private BookRequestDTO bookRequestDTO;
 
   @BeforeEach
   void setUp() {
@@ -95,6 +97,15 @@ public class BookControllerTest {
             .authors(List.of(dev))
             .genres(List.of(education))
             .build();
+
+    bookRequestDTO =
+        BookRequestDTO.builder()
+            .title("Le Petit Prince")
+            .summary("A poetic story about friendship, love and life lessons")
+            .isbn("978-0156012195")
+            .authorIds(List.of(antoine.getId()))
+            .genreIds(List.of(fiction.getId()))
+            .build();
   }
 
   @Test
@@ -118,15 +129,13 @@ public class BookControllerTest {
 
   @Test
   void createBooks_shouldReturn_201() throws Exception {
-    List<Book> booksTocreate = List.of(lePetitPrince);
-
-    when(bookService.create(ArgumentMatchers.any())).thenReturn(booksTocreate);
+    when(bookService.create(ArgumentMatchers.any())).thenReturn(List.of(lePetitPrince));
 
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(booksTocreate)))
+                .content(objectMapper.writeValueAsString(List.of(bookRequestDTO))))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Le Petit Prince"));
