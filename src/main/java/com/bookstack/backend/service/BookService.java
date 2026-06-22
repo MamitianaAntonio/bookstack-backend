@@ -1,16 +1,28 @@
 package com.bookstack.backend.service;
 
+import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.exception.AlreadyExistsException;
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookMapper;
 import com.bookstack.backend.model.Book;
+import com.bookstack.backend.repository.AuthorRepository;
 import com.bookstack.backend.repository.BookRepository;
+import com.bookstack.backend.repository.GenreRepository;
+import com.bookstack.backend.repository.model.JAuthor;
+import com.bookstack.backend.repository.model.JBook;
+import com.bookstack.backend.repository.model.JGenre;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 public class BookService {
   private final BookRepository repository;
+  private final AuthorRepository authorRepository;
+  private final GenreRepository genreRepository;
   private final BookMapper mapper;
 
   public List<Book> findAll() {
@@ -21,25 +33,88 @@ public class BookService {
     return mapper.toModel(
         repository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found")));
+            .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found")));
   }
 
-  public List<Book> create(List<Book> toSave) {
-    return mapper.toModel(repository.saveAll(mapper.toEntity(toSave)));
+  @Transactional
+  public List<Book> create(List<BookRequestDTO> booksToSave) {
+    List<JBook> managedBooks = new ArrayList<>();
+
+    for (BookRequestDTO dto : booksToSave) {
+      if (repository.findByIsbn(dto.getIsbn()).isPresent()) {
+        throw new AlreadyExistsException("Book with isbn " + dto.getIsbn() + " already exists");
+      }
+
+      JBook jBook = new JBook();
+      jBook.setTitle(dto.getTitle());
+      jBook.setSummary(dto.getSummary());
+      jBook.setIsbn(dto.getIsbn());
+
+      if (dto.getAuthorIds() != null && !dto.getAuthorIds().isEmpty()) {
+        List<JAuthor> authors = authorRepository.findAllById(dto.getAuthorIds());
+        if (authors.size() != dto.getAuthorIds().size()) {
+          throw new NotFoundException("Some authors not found");
+        }
+        jBook.setAuthors(authors);
+      }
+
+      if (dto.getGenreIds() != null && !dto.getGenreIds().isEmpty()) {
+        List<JGenre> genres = genreRepository.findAllById(dto.getGenreIds());
+        if (genres.size() != dto.getGenreIds().size()) {
+          throw new NotFoundException("Some genres not found");
+        }
+        jBook.setGenres(genres);
+      }
+
+      managedBooks.add(jBook);
+    }
+    return mapper.toModel(repository.saveAll(managedBooks));
   }
 
-  public Book update(String id, Book book) {
+  @Transactional
+  public Book update(String id, BookRequestDTO book) {
+    JBook existingBook =
+        repository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
+
     repository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
-    book.setId(id);
-    return mapper.toModel(repository.save(mapper.toEntity(book)));
+        .findByIsbn(book.getIsbn())
+        .ifPresent(
+            existing -> {
+              if (!existing.getId().equals(id)) {
+                throw new AlreadyExistsException(
+                    "Book with isbn " + book.getIsbn() + " already exists");
+              }
+            });
+
+    existingBook.setTitle(book.getTitle());
+    existingBook.setSummary(book.getSummary());
+    existingBook.setIsbn(book.getIsbn());
+
+    if (book.getAuthorIds() != null) {
+      List<JAuthor> authors = authorRepository.findAllById(book.getAuthorIds());
+      if (authors.size() != book.getAuthorIds().size()) {
+        throw new NotFoundException("Some authors not found");
+      }
+      existingBook.setAuthors(authors);
+    }
+
+    if (book.getGenreIds() != null) {
+      List<JGenre> genres = genreRepository.findAllById(book.getGenreIds());
+      if (genres.size() != book.getGenreIds().size()) {
+        throw new NotFoundException("Some genres not found");
+      }
+      existingBook.setGenres(genres);
+    }
+
+    return mapper.toModel(repository.save(existingBook));
   }
 
   public void delete(String id) {
     repository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Book with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
     repository.deleteById(id);
   }
 }
