@@ -43,5 +43,5 @@ out/
 ### Mac OS ###
 .DS_Store
 
-### environnement variables ###
+### .env file
 .env
