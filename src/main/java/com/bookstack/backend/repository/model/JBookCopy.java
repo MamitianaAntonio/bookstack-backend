@@ -5,11 +5,13 @@ import com.bookstack.backend.enums.Language;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 @Table(name = "book_copy")
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class JBookCopy {
