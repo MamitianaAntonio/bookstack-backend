@@ -17,5 +17,4 @@ public interface PublisherRepository extends JpaRepository<JPublisher, String> {
   Boolean existsByEmail(String email);
 
   Boolean existsByWebsite(String website);
-
 }

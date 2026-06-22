@@ -17,7 +17,6 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
 
   List<JBookCopy> findByBookIdAndFormat(String bookId, Format format);
 
-
   @Query(
       "SELECT bc FROM JBookCopy bc JOIN bc.priceHistories ph WHERE ph.price BETWEEN :min AND :max")
   List<JBookCopy> findByPriceRange(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
