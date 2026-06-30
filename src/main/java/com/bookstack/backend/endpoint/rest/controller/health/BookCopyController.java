@@ -1,7 +1,6 @@
 package com.bookstack.backend.endpoint.rest.controller.health;
 
 import com.bookstack.backend.model.BookCopy;
-import com.bookstack.backend.repository.BookCopyRepository;
 import com.bookstack.backend.service.BookCopyService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 public class BookCopyController {
-  private BookCopyRepository bookCopyRepository;
   private BookCopyService bookCopyService;
 
   @GetMapping("/book-copy")

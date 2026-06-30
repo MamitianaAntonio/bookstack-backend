@@ -1,5 +1,6 @@
 package com.bookstack.backend.service;
 
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.PublisherMapper;
 import com.bookstack.backend.model.Publisher;
 import com.bookstack.backend.repository.PublisherRepository;
@@ -21,14 +22,15 @@ public class PublisherService {
     return mapper.toModel(
         publisherRepository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Publisher with id " + id + " not found")));
+            .orElseThrow(() -> new NotFoundException("Publisher with id " + id + " not found")));
   }
 
   public Publisher findByName(String name) {
     return mapper.toModel(
         publisherRepository
             .findByName(name)
-            .orElseThrow(() -> new RuntimeException("Publisher with name " + name + " not found")));
+            .orElseThrow(
+                () -> new NotFoundException("Publisher with name " + name + " not found")));
   }
 
   public boolean existsByEmail(String email) {
@@ -40,7 +42,7 @@ public class PublisherService {
         publisherRepository
             .findByEmail(email)
             .orElseThrow(
-                () -> new RuntimeException("Publisher with email " + email + " not found")));
+                () -> new NotFoundException("Publisher with email " + email + " not found")));
   }
 
   public Publisher findByWebsite(String website) {
@@ -48,7 +50,7 @@ public class PublisherService {
         publisherRepository
             .findByWebsite(website)
             .orElseThrow(
-                () -> new RuntimeException("Publisher with website " + website + " not found")));
+                () -> new NotFoundException("Publisher with website " + website + " not found")));
   }
 
   // creating many publisher
@@ -64,7 +66,7 @@ public class PublisherService {
   public Publisher update(String id, Publisher toUpdate) {
     publisherRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Publisher with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Publisher with id " + id + " not found"));
     toUpdate.setId(id);
     return mapper.toModel(publisherRepository.save(mapper.toEntity(toUpdate)));
   }
@@ -72,7 +74,7 @@ public class PublisherService {
   public void delete(String id) {
     publisherRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Publisher with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Publisher with id " + id + " not found"));
     publisherRepository.deleteById(id);
   }
 }

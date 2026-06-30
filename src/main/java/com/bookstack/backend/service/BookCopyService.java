@@ -2,6 +2,7 @@ package com.bookstack.backend.service;
 
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookCopyMapper;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.repository.BookCopyRepository;
@@ -25,7 +26,7 @@ public class BookCopyService {
     return mapper.toModel(
         repository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("BookCopy with id " + id + " not found")));
+            .orElseThrow(() -> new NotFoundException("BookCopy with id " + id + " not found")));
   }
 
   public List<BookCopy> findByFormat(Format format) {
