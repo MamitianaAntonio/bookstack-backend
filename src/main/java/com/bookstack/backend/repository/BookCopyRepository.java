@@ -1,6 +1,7 @@
 package com.bookstack.backend.repository;
 
 import com.bookstack.backend.enums.Format;
+import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.repository.model.JBookCopy;
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
 
   List<JBookCopy> findByFormat(Format format);
 
-  List<JBookCopy> findByLanguage(String language);
+  List<JBookCopy> findByLanguage(Language language);
 
   List<JBookCopy> findByBookIdAndFormat(String bookId, Format format);
 

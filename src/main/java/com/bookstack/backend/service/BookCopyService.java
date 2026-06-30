@@ -1,6 +1,7 @@
 package com.bookstack.backend.service;
 
 import com.bookstack.backend.enums.Format;
+import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.mapper.BookCopyMapper;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.repository.BookCopyRepository;
@@ -31,7 +32,7 @@ public class BookCopyService {
     return mapper.toModel(repository.findByFormat(format));
   }
 
-  public List<BookCopy> findByLanguage(String language) {
+  public List<BookCopy> findByLanguage(Language language) {
     return mapper.toModel(repository.findByLanguage(language));
   }
 
