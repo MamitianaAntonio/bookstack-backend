@@ -1,5 +1,6 @@
 package com.bookstack.backend.service;
 
+import com.bookstack.backend.dto.BookCopyRequestDTO;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.exception.NotFoundException;
@@ -7,6 +8,12 @@ import com.bookstack.backend.mapper.BookCopyMapper;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.repository.BookCopyRepository;
 import java.util.List;
+
+import com.bookstack.backend.repository.BookRepository;
+import com.bookstack.backend.repository.PublisherRepository;
+import com.bookstack.backend.repository.model.JBook;
+import com.bookstack.backend.repository.model.JBookCopy;
+import com.bookstack.backend.repository.model.JPublisher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +21,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class BookCopyService {
   private final BookCopyRepository repository;
+  private final BookRepository bookRepository;
+  private final PublisherRepository publisherRepository;
   private final BookCopyMapper mapper;
   private final BookService bookService;
   private final PublisherService publisherService;
@@ -51,11 +60,22 @@ public class BookCopyService {
     return mapper.toModel(repository.findByBookIdAndFormat(bookId, format));
   }
 
-  public BookCopy create(BookCopy bookCopy) {
-    return mapper.toModel(repository.save(mapper.toEntity(bookCopy)));
+  public BookCopy create(BookCopyRequestDTO dto) {
+    JBook book = bookRepository.findById(dto.getBookId())
+            .orElseThrow(() -> new NotFoundException("Book with id " + dto.getBookId() + " not found"));
+    JPublisher publisher = publisherRepository.findById(dto.getPublisherId())
+            .orElseThrow(() -> new NotFoundException("Publisher with id " + dto.getPublisherId() + " not found"));
+
+    JBookCopy jBookCopy = new JBookCopy();
+    jBookCopy.setFormat(dto.getFormat());
+    jBookCopy.setLanguage(dto.getLanguage());
+    jBookCopy.setBook(book);
+    jBookCopy.setPublisher(publisher);
+
+    return mapper.toModel(repository.save(jBookCopy));
   }
 
-  public List<BookCopy> create(List<BookCopy> bookCopies) {
+  public List<BookCopy> create(List<BookCopyRequestDTO> bookCopies) {
     return bookCopies.stream().map(this::create).toList();
   }
 

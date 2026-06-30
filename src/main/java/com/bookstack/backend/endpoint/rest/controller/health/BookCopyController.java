@@ -1,5 +1,6 @@
 package com.bookstack.backend.endpoint.rest.controller.health;
 
+import com.bookstack.backend.dto.BookCopyRequestDTO;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.service.BookCopyService;
 import java.util.List;
@@ -22,7 +23,7 @@ public class BookCopyController {
   }
 
   @PostMapping("/book-copy")
-  public List<BookCopy> create(@RequestBody List<BookCopy> bookCopies) {
+  public List<BookCopy> create(@RequestBody List<BookCopyRequestDTO> bookCopies) {
     return bookCopyService.create(bookCopies);
   }
 }
