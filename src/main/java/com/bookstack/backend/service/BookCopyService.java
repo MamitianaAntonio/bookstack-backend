@@ -7,13 +7,12 @@ import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookCopyMapper;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.repository.BookCopyRepository;
-import java.util.List;
-
 import com.bookstack.backend.repository.BookRepository;
 import com.bookstack.backend.repository.PublisherRepository;
 import com.bookstack.backend.repository.model.JBook;
 import com.bookstack.backend.repository.model.JBookCopy;
 import com.bookstack.backend.repository.model.JPublisher;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -61,10 +60,18 @@ public class BookCopyService {
   }
 
   public BookCopy create(BookCopyRequestDTO dto) {
-    JBook book = bookRepository.findById(dto.getBookId())
-            .orElseThrow(() -> new NotFoundException("Book with id " + dto.getBookId() + " not found"));
-    JPublisher publisher = publisherRepository.findById(dto.getPublisherId())
-            .orElseThrow(() -> new NotFoundException("Publisher with id " + dto.getPublisherId() + " not found"));
+    JBook book =
+        bookRepository
+            .findById(dto.getBookId())
+            .orElseThrow(
+                () -> new NotFoundException("Book with id " + dto.getBookId() + " not found"));
+    JPublisher publisher =
+        publisherRepository
+            .findById(dto.getPublisherId())
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        "Publisher with id " + dto.getPublisherId() + " not found"));
 
     JBookCopy jBookCopy = new JBookCopy();
     jBookCopy.setFormat(dto.getFormat());

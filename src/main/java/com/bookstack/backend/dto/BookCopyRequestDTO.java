@@ -10,8 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookCopyRequestDTO {
-    private Format format;
-    private Language language;
-    private String bookId;
-    private String publisherId;
+  private Format format;
+  private Language language;
+  private String bookId;
+  private String publisherId;
 }
