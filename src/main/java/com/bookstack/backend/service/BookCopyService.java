@@ -1,6 +1,7 @@
 package com.bookstack.backend.service;
 
 import com.bookstack.backend.dto.BookCopyRequestDTO;
+import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.enums.StockStatus;
@@ -29,37 +30,15 @@ public class BookCopyService {
 
   private static final int LOW_STOCK_THRESHOLD = 5;
 
-  public int calculateStock(String bookCopyId) {
-    int arrived = arrivalItemRepository.sumQuantityByBookCopyId(bookCopyId);
-    int sold = saleItemRepository.sumQuantityByBookCopyId(bookCopyId);
-    return arrived - sold;
-  }
-
-  public StockStatus calculateStatus(int stock) {
-    if (stock <= 0) return StockStatus.OUT_OF_STOCK;
-    if (stock <= LOW_STOCK_THRESHOLD) return StockStatus.LOW;
-    return StockStatus.AVAILABLE;
-  }
-
-  public BookCopy enrichWithStock(BookCopy bookCopy) {
-    int stock = calculateStock(bookCopy.getId());
-    StockStatus status = calculateStatus(stock);
-    bookCopy.setStock(stock);
-    bookCopy.setStockStatus(status);
-    return bookCopy;
-  }
-
   public List<BookCopy> findAll() {
-    return mapper.toModel(repository.findAll()).stream().map(this::enrichWithStock).toList();
+    return mapper.toModel(repository.findAll());
   }
 
   public BookCopy findById(String id) {
-    BookCopy bookCopy =
-        mapper.toModel(
-            repository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("BookCopy with id " + id + " not found")));
-    return enrichWithStock(bookCopy);
+    return mapper.toModel(
+        repository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("BookCopy with id " + id + " not found")));
   }
 
   public List<BookCopy> findByFormat(Format format) {
@@ -113,5 +92,30 @@ public class BookCopyService {
 
   public BookCopy update(BookCopy bookCopy) {
     return mapper.toModel(repository.save(mapper.toEntity(bookCopy)));
+  }
+
+  public int calculateStock(String bookCopyId) {
+    int arrived = arrivalItemRepository.sumQuantityByBookCopyId(bookCopyId);
+    int sold = saleItemRepository.sumQuantityByBookCopyId(bookCopyId);
+    return arrived - sold;
+  }
+
+  public StockStatus calculateStatus(int stock) {
+    if (stock <= 0) return StockStatus.OUT_OF_STOCK;
+    if (stock <= LOW_STOCK_THRESHOLD) return StockStatus.LOW;
+    return StockStatus.AVAILABLE;
+  }
+
+  public StockResponseDTO getStock(String bookCopyId) {
+    JBookCopy jBookCopy =
+        repository
+            .findById(bookCopyId)
+            .orElseThrow(
+                () -> new NotFoundException("BookCopy with id " + bookCopyId + " not found"));
+    String bookCopyTitle = jBookCopy.getBook().getTitle();
+
+    int stock = calculateStock(bookCopyId);
+    StockStatus status = calculateStatus(stock);
+    return new StockResponseDTO(bookCopyId, bookCopyTitle, stock, status);
   }
 }
