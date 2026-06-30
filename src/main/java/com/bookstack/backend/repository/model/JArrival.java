@@ -18,6 +18,7 @@ public class JArrival {
   @Column(name = "arrival_time", nullable = false)
   private Instant arrivalTime;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Condition condition;
 
