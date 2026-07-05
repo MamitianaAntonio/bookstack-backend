@@ -1,7 +1,8 @@
 package com.bookstack.backend.endpoint.rest.controller.health;
 
+import com.bookstack.backend.dto.BookCopyRequestDTO;
+import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.model.BookCopy;
-import com.bookstack.backend.repository.BookCopyRepository;
 import com.bookstack.backend.service.BookCopyService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 public class BookCopyController {
-  private BookCopyRepository bookCopyRepository;
   private BookCopyService bookCopyService;
 
   @GetMapping("/book-copy")
@@ -24,7 +24,12 @@ public class BookCopyController {
   }
 
   @PostMapping("/book-copy")
-  public List<BookCopy> create(@RequestBody List<BookCopy> bookCopies) {
+  public List<BookCopy> create(@RequestBody List<BookCopyRequestDTO> bookCopies) {
     return bookCopyService.create(bookCopies);
+  }
+
+  @GetMapping("/book-copy/{id}/stock")
+  public StockResponseDTO getStock(@PathVariable String id) {
+    return bookCopyService.getStock(id);
   }
 }
