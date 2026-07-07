@@ -25,25 +25,22 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
   List<JBookCopy> findByPublisherId(String publisherId);
 
   @Query(
-          """
-                SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0) 
-                FROM JBookCopy bc
-                LEFT JOIN bc.arrivalItems ai 
-                LEFT JOIN bc.saleItems si
-                WHERE bc.id = :bookCopyId
-                  """
-  )
+      """
+      SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0)
+      FROM JBookCopy bc
+      LEFT JOIN bc.arrivalItems ai
+      LEFT JOIN bc.saleItems si
+      WHERE bc.id = :bookCopyId
+      """)
   Integer calculateTotalStockByBookCopyId(@Param("bookCopyId") String bookCopyId);
 
   @Query(
-          """
-            SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0) 
-            FROM JBookCopy bc
-            LEFT JOIN bc.arrivalItems ai 
-            LEFT JOIN bc.saleItems si
-            WHERE bc.book.id = :bookId 
-          """
-  )
+      """
+        SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0)
+        FROM JBookCopy bc
+        LEFT JOIN bc.arrivalItems ai
+        LEFT JOIN bc.saleItems si
+        WHERE bc.book.id = :bookId
+      """)
   Integer calculateTotalStockByBookId(@Param("bookId") String bookId);
-
 }

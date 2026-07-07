@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormatStockDTO {
-    private String bookCopyId;
-    private Format format;
-    private Language language;
-    private Integer stock;
+  private String bookCopyId;
+  private Format format;
+  private Language language;
+  private Integer stock;
 }
