@@ -445,3 +445,70 @@ paths:
           $ref: '#/components/responses/500InternalError'
 
   
+  /book-copy:
+    get:
+      tags: [ BookCopies ]
+      summary: List of all BookCopies
+      responses:
+        '200':
+          description: BookCopies list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookCopy'
+        '500':
+          $ref: '#/components/responses/500InternalError'
+
+    post:
+      tags: [ BookCopies ]
+      summary: Create one or more BookCopy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BookCopyRequest'
+      responses:
+        '200':
+          description: BookCopies created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookCopy'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalError'
+
+
+  /book-copy/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [ BookCopies ]
+      summary: Get BookCopy by its id
+      responses:
+        '200':
+          description: BookCopy found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookCopy'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalError'
