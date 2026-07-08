@@ -32,6 +32,7 @@ public class StockService {
                   Integer stock = bookCopyRepository.calculateTotalStockByBookCopyId(copy.getId());
                   return new FormatStockDTO(
                       copy.getId(),
+                      copy.getBook().getTitle(),
                       copy.getFormat(),
                       copy.getLanguage(),
                       stock != null ? stock : 0);
@@ -57,6 +58,10 @@ public class StockService {
 
     Integer stock = bookCopyRepository.calculateTotalStockByBookCopyId(bookCopyId);
     return new FormatStockDTO(
-        copy.getId(), copy.getFormat(), copy.getLanguage(), stock != null ? stock : 0);
+        copy.getId(),
+        copy.getBook().getTitle(),
+        copy.getFormat(),
+        copy.getLanguage(),
+        stock != null ? stock : 0);
   }
 }
