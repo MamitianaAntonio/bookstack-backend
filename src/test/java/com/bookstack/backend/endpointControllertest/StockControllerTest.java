@@ -3,10 +3,12 @@ package com.bookstack.backend.endpointControllertest;
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
 import com.bookstack.backend.endpoint.rest.controller.health.BookController;
+import com.bookstack.backend.endpoint.rest.controller.health.StockController;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.exception.GlobalExceptionHandler;
 import com.bookstack.backend.exception.NotFoundException;
+import com.bookstack.backend.service.BookService;
 import com.bookstack.backend.service.StockService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
-@WebMvcTest({BookController.class, GlobalExceptionHandler.class})
+@WebMvcTest({StockController.class, GlobalExceptionHandler.class})
 public class StockControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,6 +36,9 @@ public class StockControllerTest {
 
     @MockBean
     private StockService stockService;
+
+    @MockBean
+    private BookService bookService;
 
     private BookStockResponseDTO bookStockResponseDTO;
     private FormatStockDTO formatStockDTO;
@@ -62,7 +67,7 @@ public class StockControllerTest {
         );
 
         bookStockResponseDTO = new BookStockResponseDTO(
-                bookCopyId,
+                bookId,
                 "The Great Gatsby",
                 "978-0743273565",
                 15,
@@ -84,7 +89,7 @@ public class StockControllerTest {
         when(stockService.getBookStock(bookId)).thenReturn(bookStockResponseDTO);
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("api/stock/book/" + bookId))
+                .perform(MockMvcRequestBuilders.get("/api/stock/book/" + bookId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.bookId").value(bookId))
@@ -100,7 +105,7 @@ public class StockControllerTest {
                 .thenThrow(new NotFoundException("Book not found"));
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("api/stock/book/" + wrongId))
+                .perform(MockMvcRequestBuilders.get("/api/stock/book/" + wrongId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Book not found"))
@@ -113,7 +118,7 @@ public class StockControllerTest {
         when(stockService.getFormatStock(bookCopyId)).thenReturn(formatStockDTO);
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("api/stock/format/" + bookCopyId))
+                .perform(MockMvcRequestBuilders.get("/api/stock/format/" + bookCopyId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.bookCopyId").value(bookCopyId))
@@ -130,7 +135,7 @@ public class StockControllerTest {
         when(stockService.getFormatStock(wrongId)).thenThrow(new NotFoundException("Book copy not found"));
 
         mockMvc
-                .perform(MockMvcRequestBuilders.get("api/stock/format/" + wrongId))
+                .perform(MockMvcRequestBuilders.get("/api/stock/format/" + wrongId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Book copy not found"))
