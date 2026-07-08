@@ -593,4 +593,355 @@ paths:
           $ref: '#/components/responses/500InternalError'
 
 
+  /authors:
+    get:
+      tags: [ Authors ]
+      summary: List all authors
+      responses:
+        200:
+          description: List of all authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    post:
+      tags: [ Authors ]
+      summary: Create one or more authors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Author'
+      responses:
+        200:
+          description: Authors created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        409:
+          $ref: '#/components/responses/409Conflict'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+  /authors/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [ Authors ]
+      summary: Get author by his/her id
+      operationId: getAuthorById
+      responses:
+        200:
+          description: Auteur trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    put:
+      tags: [ Authors ]
+      summary: Update an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        200:
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    delete:
+      tags: [ Authors ]
+      summary: Delete an author
+      responses:
+        204:
+          description: Author deleted
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+
+  /genres:
+    get:
+      tags: [ Genres ]
+      summary: List all genres
+      responses:
+        200:
+          description: List of all genres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    post:
+      tags: [ Genres ]
+      summary: Create one or more genres
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Genre'
+      responses:
+        200:
+          description: Genres created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        409:
+          $ref: '#/components/responses/409Conflict'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+
+  /genres/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [ Genres ]
+      summary: Get genre by its id
+      responses:
+        200:
+          description: Genre found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    put:
+      tags: [ Genres ]
+      summary: Update a genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+      responses:
+        200:
+          description: Genre updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    delete:
+      tags: [ Genres ]
+      summary: Delete a genre
+      responses:
+        204:
+          description: Genre deleted
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+  /genres/{id}/revenue:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [ Genres ]
+      summary: Revenue generated by a genre over a period of time
+      description: >
+        Returns the total COMPLETED sales for books belonging
+        to this genre, for the period defined by 'start' and 'end'.
+      parameters:
+        - name: start
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          example: 2024-01-01T00:00:00Z
+        - name: end
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          example: 2024-12-31T23:59:59Z
+      responses:
+        200:
+          description: Revenus du genre sur la période
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenreRevenue'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+
+  /publishers:
+    get:
+      tags: [ Publishers ]
+      summary: List all publishers
+      responses:
+        200:
+          description: List of all publishers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publisher'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    post:
+      tags: [ Publishers ]
+      summary: Create one or more publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Publisher'
+      responses:
+        200:
+          description: Publishers created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publisher'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        409:
+          $ref: '#/components/responses/409Conflict'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+  /publishers/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags: [ Publishers ]
+      summary: Get a publisher by his/her id
+      responses:
+        200:
+          description: Publisher found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    put:
+      tags: [ Publishers ]
+      summary: Update a publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+      responses:
+        200:
+          description: Publisher updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+    delete:
+      tags: [ Publishers ]
+      summary: Delete a publisher
+      responses:
+        204:
+          description: Publisher deleted
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+
 
