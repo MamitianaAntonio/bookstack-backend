@@ -512,3 +512,85 @@ paths:
           $ref: '#/components/responses/404NotFound'
         '500':
           $ref: '#/components/responses/500InternalError'
+
+
+  /stock/book/{bookId}:
+    parameters:
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [ Stock ]
+      summary: Stock of a book all editions combined
+      description: Returns the total stock and a breakdown by edition for a given book
+      responses:
+        200:
+          description: Book stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookStock'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalError'
+
+  /stock/format/{bookCopyId}:
+    parameters:
+      - name: bookCopyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [ Stock ]
+      summary: Stock of a specific edition
+      description: Returns the stock for a specific BookCopy
+      responses:
+        200:
+          description: Edition stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormatStock'
+        404:
+          $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+  /stock/low:
+    get:
+      tags: [ Stock ]
+      summary: Books with low stock
+      description: >
+        Returns all books whose total stock is less than or equal to the
+        threshold (default=3).
+      parameters:
+        - name: threshold
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 3
+            minimum: 0
+          example: 3
+      responses:
+        200:
+          description: List of books with low stock
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookStock'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+
+
