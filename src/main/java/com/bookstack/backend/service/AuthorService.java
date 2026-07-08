@@ -1,5 +1,6 @@
 package com.bookstack.backend.service;
 
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.AuthorMapper;
 import com.bookstack.backend.model.Author;
 import com.bookstack.backend.repository.AuthorRepository;
@@ -21,7 +22,7 @@ public class AuthorService {
     return mapper.toModel(
         repository
             .findById(id)
-            .orElseThrow(() -> new RuntimeException("Author with id " + id + " not found")));
+            .orElseThrow(() -> new NotFoundException("Author with id " + id + " not found")));
   }
 
   public List<Author> create(List<Author> toSave) {
@@ -31,7 +32,7 @@ public class AuthorService {
   public Author update(String id, Author author) {
     repository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Author with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Author with id " + id + " not found"));
     author.setId(id);
     return mapper.toModel(repository.save(mapper.toEntity(author)));
   }
@@ -39,7 +40,7 @@ public class AuthorService {
   public void delete(String id) {
     repository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Author with id " + id + " not found"));
+        .orElseThrow(() -> new NotFoundException("Author with id " + id + " not found"));
     repository.deleteById(id);
   }
 }
