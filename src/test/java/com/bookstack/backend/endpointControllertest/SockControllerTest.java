@@ -64,7 +64,7 @@ public class SockControllerTest {
         bookStockResponseDTO = new BookStockResponseDTO(
                 bookCopyId,
                 "The Great Gatsby",
-                "978-0-7432-7356-5",
+                "978-0743273565",
                 15,
                 List.of(format1, format2)
 
@@ -89,7 +89,7 @@ public class SockControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.bookId").value(bookId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("The Great Gatsby"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("978-0-7432-7356-5"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("978-0743273565"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalStock").value(15));
     }
 
