@@ -25,7 +25,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest({BookController.class, GlobalExceptionHandler.class})
-public class SockControllerTest {
+public class StockControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
