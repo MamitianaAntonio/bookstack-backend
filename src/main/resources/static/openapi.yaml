@@ -1,0 +1,312 @@
+openapi: 3.1.0
+info:
+  title: Bookstack backend API
+  description: Library management API
+  version: 1.0.0
+
+servers:
+  - url: 'http://localhost:8080'
+
+tags:
+  - name: Books
+  - name: Authors
+  - name: Genres
+  - name: Publishers
+  - name: BookCopies
+  - name: Stock
+
+components:
+  schemas:
+    Format:
+      type: string
+      enum: [ PAPERBACK, HARDBACK, POCKET ]
+      description: Physical format of a copy
+
+    Language:
+      type: string
+      enum: [ ENG, FR, GER, MG, OTHER ]
+      description: Language of a book copy or an author
+
+    Status:
+      type: string
+      enum: [ PENDING, COMPLETED, CANCELLED, BOOKED ]
+      description: Sales status
+
+    StockStatus:
+      type: string
+      enum: [ AVAILABLE, LOW, OUT_OF_STOCK ]
+      description: Stock Status of a book copy
+
+    Role:
+      type: string
+      enum: [ LIBRARIAN, ASSISTANT_LIBRARIAN, LIBRARY_MANAGER, ARCHIVIST, CLERK ]
+      description: Role of an administrator
+
+    PaymentMethod:
+      type: string
+      enum: [ CASH, CARD, MOBILE_MONEY ]
+      description: Payment method
+
+    Genre:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          example: Romance
+        description:
+          type: string
+          example: Stories centered around love and relationships.
+
+    Publisher:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          example: Gallimard
+        email:
+          type: string
+          format: email
+          example: contact@gallimard.fr
+        website:
+          type: string
+          format: uri
+          example: https://www.gallimard.fr
+        location:
+          type: string
+          example: Paris, France
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        firstName:
+          type: string
+          example: Antoine
+        lastName:
+          type: string
+          example: de Saint-Exupéry
+        biography:
+          type: string
+          example: Écrivain et aviateur français.
+        language:
+          $ref: '#/components/schemas/Language'
+        email:
+          type: string
+          format: email
+          example: saint.exupery@example.com
+
+    PriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        price:
+          type: number
+          format: decimal
+          example: 12.99
+        changedAt:
+          type: string
+          format: date-time
+          example: 2026-07-1T10:30:00Z
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          example: Le Petit Prince
+        summary:
+          type: string
+          example: Un petit prince voyage de planète en planète et apprend des leçons sur la vie.
+        isbn:
+          type: string
+          example: 978-2070612758
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+
+    BookCopy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        format:
+          $ref: '#/components/schemas/Format'
+        language:
+          $ref: '#/components/schemas/Language'
+        book:
+          $ref: '#/components/schemas/Book'
+        publisher:
+          $ref: '#/components/schemas/Publisher'
+        priceHistories:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceHistory'
+
+
+    BookRequest:
+      type: object
+      required: [ title, summary, isbn ]
+      properties:
+        title:
+          type: string
+          example: Les Misérables
+        summary:
+          type: string
+          example: Roman historique de Victor Hugo publié en 1862.
+        isbn:
+          type: string
+          example: 978-2-07-040850-4
+        authorIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          example: [ "a1a1a1a1-..." ]
+        genreIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          example: [ "e4b6a7c8-..." ]
+
+    BookCopyRequest:
+      type: object
+      required: [ format, language, bookId, publisherId ]
+      properties:
+        format:
+          $ref: '#/components/schemas/Format'
+        language:
+          $ref: '#/components/schemas/Language'
+        bookId:
+          type: string
+          format: uuid
+        publisherId:
+          type: string
+          format: uuid
+
+
+    FormatStock:
+      type: object
+      description: Stock of a specific BookCopy edition
+      properties:
+        bookCopyId:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/Format'
+        language:
+          $ref: '#/components/schemas/Language'
+        stock:
+          type: integer
+          example: 5
+
+    BookStock:
+      type: object
+      description: Stock of a book all editions combined
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: Les Misérables
+        isbn:
+          type: string
+          example: 978-2-07-040850-4
+        totalStock:
+          type: integer
+          description: Total inventory of all editions
+          example: 13
+        formats:
+          type: array
+          description: Stock details by edition
+          items:
+            $ref: '#/components/schemas/FormatStock'
+
+    StockResponse:
+      type: object
+      description: Stock of a BookCopy with its status
+      properties:
+        bookCopyId:
+          type: string
+          format: uuid
+        bookCopyTitle:
+          type: string
+          example: Les Misérables — Poche FR
+        stock:
+          type: integer
+          example: 2
+        status:
+          $ref: '#/components/schemas/StockStatus'
+
+    GenreRevenue:
+      type: object
+      description: Revenue generated by a genre over a given period
+      properties:
+        genreId:
+          type: string
+          format: uuid
+        genreName:
+          type: string
+          example: Romance
+        totalRevenue:
+          type: number
+          format: decimal
+          description: Total COMPLETED sales for this genre during the period
+          example: 4520.50
+        periodStart:
+          type: string
+          format: date-time
+          example: 2025-07-01T00:00:00Z
+        periodEnd:
+          type: string
+          format: date-time
+          example: 2025-07-07T23:59:59Z
+
+
+    ErrorBody:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: Book with id xxx not found
+        path:
+          type: string
+          example: /books/xxx
+        timestamp:
+          type: string
+          format: date-time
+
+paths:
+  
