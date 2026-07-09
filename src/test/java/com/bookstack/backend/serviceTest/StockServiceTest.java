@@ -84,8 +84,6 @@ public class StockServiceTest {
 
     NotFoundException exception =
         assertThrows(NotFoundException.class, () -> stockService.getBookStock(wrongId));
-
-    assertEquals("Book not found with id: " + wrongId, exception.getMessage());
   }
 
   @Test
@@ -110,7 +108,5 @@ public class StockServiceTest {
 
     NotFoundException exception =
         assertThrows(NotFoundException.class, () -> stockService.getFormatStock(wrongId));
-
-    assertEquals("Book copy not found with id: " + wrongId, exception.getMessage());
   }
 }

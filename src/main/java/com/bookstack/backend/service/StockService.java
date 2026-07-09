@@ -2,11 +2,11 @@ package com.bookstack.backend.service;
 
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
+import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.repository.BookCopyRepository;
 import com.bookstack.backend.repository.BookRepository;
 import com.bookstack.backend.repository.model.JBook;
 import com.bookstack.backend.repository.model.JBookCopy;
-import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
