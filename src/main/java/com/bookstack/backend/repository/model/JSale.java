@@ -5,7 +5,6 @@ import com.bookstack.backend.enums.Status;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
-
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 

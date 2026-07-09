@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaleItemRequest {
-    private BookCopyRequest bookCopy;
-    private Integer quantity;
+  private BookCopyRequest bookCopy;
+  private Integer quantity;
 }

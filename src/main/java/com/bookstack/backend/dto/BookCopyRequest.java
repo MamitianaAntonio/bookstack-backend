@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BookCopyRequest {
-    private String bookId;
+  private String bookId;
 }

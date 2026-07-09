@@ -2,7 +2,6 @@ package com.bookstack.backend.repository.model;
 
 import jakarta.persistence.*;
 import java.util.List;
-
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
