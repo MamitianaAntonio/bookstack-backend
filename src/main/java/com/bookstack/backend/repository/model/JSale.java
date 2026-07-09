@@ -5,14 +5,16 @@ import com.bookstack.backend.enums.Status;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 @Table(name = "sale")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class JSale {
   @Id @UuidGenerator private String id;
 
@@ -31,6 +33,10 @@ public class JSale {
   @JoinColumn(name = "customer_id", nullable = false)
   private JCustomer customer;
 
-  @OneToMany(mappedBy = "sale")
+  @OneToMany(
+      mappedBy = "sale",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private List<JSaleItem> saleItems;
 }

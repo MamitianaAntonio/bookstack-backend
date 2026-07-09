@@ -2,14 +2,19 @@ package com.bookstack.backend.endpoint.rest.controller.health;
 
 import com.bookstack.backend.model.Genre;
 import com.bookstack.backend.service.GenreService;
+import com.bookstack.backend.service.SaleService;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 public class GenreController {
   private final GenreService service;
+  private final SaleService saleService;
 
   @GetMapping("/genres")
   public List<Genre> getAll() {
@@ -34,5 +39,18 @@ public class GenreController {
   @DeleteMapping("/genres/{id}")
   public void delete(@PathVariable String id) {
     service.delete(id);
+  }
+
+  @GetMapping("/genre/revenue")
+  public ResponseEntity<?> getTotalRevenueByGenre(@RequestParam String genre) {
+    try {
+      BigDecimal revenue = saleService.getTotalRevenueByGenre(genre);
+      return ResponseEntity.ok(
+          Map.of(
+              "genre", genre,
+              "totalRevenue", revenue));
+    } catch (Exception e) {
+      return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
+    }
   }
 }

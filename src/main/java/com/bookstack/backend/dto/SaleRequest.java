@@ -1,4 +1,4 @@
-package com.bookstack.backend.model;
+package com.bookstack.backend.dto;
 
 import com.bookstack.backend.enums.PaymentMethod;
 import com.bookstack.backend.enums.Status;
@@ -7,16 +7,13 @@ import java.util.List;
 import lombok.*;
 
 @Getter
-@ToString
+@Setter
 @Builder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sale {
-  private String id;
+public class SaleRequest {
   private Instant saleDate;
   private PaymentMethod paymentMethod;
   private Status status;
-  private Customer customer;
-  private List<SaleItem> saleItems;
+  private List<SaleItemRequest> items;
 }
