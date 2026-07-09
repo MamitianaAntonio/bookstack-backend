@@ -163,4 +163,23 @@ public class StockControllerTest {
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
   }
+
+  @Test
+  void getLowStock_shouldReturn_KO_with_negativeStock() throws Exception {
+    StockResponseDTO negative =  new StockResponseDTO(
+            bookCopyId,
+            "Things fall apart",
+            -3,
+            StockStatus.OUT_OF_STOCK
+    );
+
+    when(stockService.getLowStock(3)).thenReturn(List.of(negative));
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(-3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("OUT_OF_STOCK"));
+  }
 }
