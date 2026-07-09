@@ -18,7 +18,6 @@ import com.bookstack.backend.repository.SaleRepository;
 import com.bookstack.backend.repository.model.JBookCopy;
 import com.bookstack.backend.repository.model.JCustomer;
 import com.bookstack.backend.repository.model.JSale;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -120,33 +119,30 @@ class SaleServiceTest {
     verify(saleRepository, never()).save(any());
   }
 
-    @Test
-    void getTotalRevenueByGenre_shouldReturnRevenue_whenSalesExist() {
-      when(saleRepository.getTotalRevenueByGenreName("Fiction"))
-              .thenReturn(new BigDecimal("450000"));
+  @Test
+  void getTotalRevenueByGenre_shouldReturnRevenue_whenSalesExist() {
+    when(saleRepository.getTotalRevenueByGenreName("Fiction")).thenReturn(new BigDecimal("450000"));
 
-      BigDecimal result = saleService.getTotalRevenueByGenre("Fiction");
+    BigDecimal result = saleService.getTotalRevenueByGenre("Fiction");
 
-      assertEquals(new BigDecimal("450000"), result);
-    }
+    assertEquals(new BigDecimal("450000"), result);
+  }
 
-    @Test
-    void getTotalRevenueByGenre_shouldReturnZero_whenNoSalesIsFound() {
-      when(saleRepository.getTotalRevenueByGenreName("Unknown"))
-              .thenReturn(null);
+  @Test
+  void getTotalRevenueByGenre_shouldReturnZero_whenNoSalesIsFound() {
+    when(saleRepository.getTotalRevenueByGenreName("Unknown")).thenReturn(null);
 
-      BigDecimal result = saleService.getTotalRevenueByGenre("Unknown");
+    BigDecimal result = saleService.getTotalRevenueByGenre("Unknown");
 
-      assertEquals(BigDecimal.ZERO, result);
-    }
+    assertEquals(BigDecimal.ZERO, result);
+  }
 
-    @Test
-    void getTotalRevenueByGenre_shouldCallRepository_withCorrectGenre() {
-      when(saleRepository.getTotalRevenueByGenreName("Fiction"))
-              .thenReturn(BigDecimal.ZERO);
+  @Test
+  void getTotalRevenueByGenre_shouldCallRepository_withCorrectGenre() {
+    when(saleRepository.getTotalRevenueByGenreName("Fiction")).thenReturn(BigDecimal.ZERO);
 
-      BigDecimal result = saleService.getTotalRevenueByGenre("Fiction");
+    BigDecimal result = saleService.getTotalRevenueByGenre("Fiction");
 
-      verify(saleRepository, times(1)).getTotalRevenueByGenreName("Fiction");
-    }
+    verify(saleRepository, times(1)).getTotalRevenueByGenreName("Fiction");
+  }
 }
