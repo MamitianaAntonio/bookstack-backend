@@ -4,11 +4,11 @@ import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
 import com.bookstack.backend.service.StockService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/stock")
@@ -24,5 +24,13 @@ public class StockController {
   @GetMapping("/format/{bookCopyId}")
   public ResponseEntity<FormatStockDTO> getFormatStock(@PathVariable String bookCopyId) {
     return ResponseEntity.ok(stockService.getFormatStock(bookCopyId));
+  }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping("/low")
+  public List<BookStockResponseDTO> getLowStock(
+          @RequestParam(defaultValue = "3") int threshold
+  ) {
+    return stockService.getLowStock(threshold);
   }
 }
