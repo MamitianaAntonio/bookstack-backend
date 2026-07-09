@@ -16,6 +16,5 @@ public class SaleRequest {
     private Instant saleDate;
     private PaymentMethod paymentMethod;
     private Status status;
-    private CustomerRequest customer;
     private List<SaleItemRequest> items;
 }
