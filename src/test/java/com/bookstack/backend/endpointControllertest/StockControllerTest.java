@@ -4,9 +4,11 @@ import static org.mockito.Mockito.when;
 
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
+import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.endpoint.rest.controller.health.StockController;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
+import com.bookstack.backend.enums.StockStatus;
 import com.bookstack.backend.exception.GlobalExceptionHandler;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.service.BookService;
@@ -113,5 +115,52 @@ public class StockControllerTest {
         .andExpect(MockMvcResultMatchers.status().isNotFound())
         .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Book copy not found"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("404"));
+  }
+
+  @Test
+  void getLowStock_shouldReturn_OK_withDefaultThreshold() throws Exception{
+    StockResponseDTO lowStockItem = new StockResponseDTO(
+            bookCopyId,
+            "The Great Gasby",
+            2,
+            StockStatus.LOW
+    );
+    when(stockService.getLowStock(3)).thenReturn(List.of(lowStockItem));
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookCopyId").value(bookCopyId))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(2))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("LOW"));
+  }
+
+  @Test
+  void getLowStock_shouldReturn_OK_withCustomThreshold() throws Exception {
+    StockResponseDTO item1 = new StockResponseDTO(
+            bookCopyId, "The Great Gatsby", 2, StockStatus.LOW
+    );
+    StockResponseDTO item2 = new StockResponseDTO(
+            UUID.randomUUID().toString(), "L'Étranger", 4, StockStatus.LOW
+    );
+    when(stockService.getLowStock(5)).thenReturn(List.of(item1, item2));
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/stock/low?threshold=5"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
+  }
+
+  @Test
+  void getLowStock_shouldReturn_EmptyList_whenNoLowStock() throws Exception {
+    when(stockService.getLowStock(3)).thenReturn(List.of());
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
   }
 }
