@@ -798,7 +798,7 @@ paths:
         500:
           $ref: '#/components/responses/500InternalError'
 
-  /genres/revenue:
+  /genres/{id}/revenue:
     parameters:
       - name: id
         in: path
