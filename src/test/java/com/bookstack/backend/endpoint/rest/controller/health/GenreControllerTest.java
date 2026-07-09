@@ -15,16 +15,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-class SaleControllerTest {
+class GenreControllerTest {
   @Mock private SaleService saleService;
 
-  @InjectMocks private SaleController saleController;
+  @InjectMocks private GenreController genreController;
 
   @Test
   void getTotalRevenueByGenre_shouldReturn200_whenValid_Genre() {
     when(saleService.getTotalRevenueByGenre("Fiction")).thenReturn(new BigDecimal("450000"));
 
-    ResponseEntity<?> response = saleController.getTotalRevenueByGenre("Fiction");
+    ResponseEntity<?> response = genreController.getTotalRevenueByGenre("Fiction");
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
@@ -34,7 +34,7 @@ class SaleControllerTest {
   void getTotalRevenueByGenre_shouldReturnCorrectBody() {
     when(saleService.getTotalRevenueByGenre("Fiction")).thenReturn(new BigDecimal("450000"));
 
-    ResponseEntity<?> response = saleController.getTotalRevenueByGenre("Fiction");
+    ResponseEntity<?> response = genreController.getTotalRevenueByGenre("Fiction");
 
     Map<?, ?> body = (Map<?, ?>) response.getBody();
     assertNotNull(body);
@@ -46,7 +46,7 @@ class SaleControllerTest {
   void getTotalRevenueByGenre_shouldReturn500_whenExceptionIsThrown() {
     when(saleService.getTotalRevenueByGenre("Fiction")).thenThrow(new RuntimeException("DB error"));
 
-    ResponseEntity<?> response = saleController.getTotalRevenueByGenre("Fiction");
+    ResponseEntity<?> response = genreController.getTotalRevenueByGenre("Fiction");
 
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
   }
@@ -55,7 +55,7 @@ class SaleControllerTest {
   void getTotalRevenueByGenre_shouldReturn200_whenNoSales() {
     when(saleService.getTotalRevenueByGenre("Unknown")).thenReturn(BigDecimal.ZERO);
 
-    ResponseEntity<?> response = saleController.getTotalRevenueByGenre("Unknown");
+    ResponseEntity<?> response = genreController.getTotalRevenueByGenre("Unknown");
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     Map<?, ?> body = (Map<?, ?>) response.getBody();
