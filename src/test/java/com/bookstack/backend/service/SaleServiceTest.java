@@ -33,11 +33,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class SaleServiceTest {
 
   @Mock private SaleRepository saleRepository;
-
   @Mock private CustomerRepository customerRepository;
-
   @Mock private BookCopyRepository bookCopyRepository;
-
   @Mock private SaleMapper saleMapper;
 
   @InjectMocks private SaleService saleService;
