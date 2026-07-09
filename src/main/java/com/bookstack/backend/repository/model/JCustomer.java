@@ -3,6 +3,8 @@ package com.bookstack.backend.repository.model;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -10,6 +12,8 @@ import org.hibernate.annotations.UuidGenerator;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
 public class JCustomer {
   @Id @UuidGenerator private String id;
 
