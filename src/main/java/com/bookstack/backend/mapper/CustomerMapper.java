@@ -41,4 +41,10 @@ public class CustomerMapper {
                 .address(model.getAddress())
                 .build();
     }
+
+    public List<JCustomer> toEntity(List<Customer> models) {
+        return models.stream()
+                .map(this::toEntity)
+                .toList();
+    }
 }
