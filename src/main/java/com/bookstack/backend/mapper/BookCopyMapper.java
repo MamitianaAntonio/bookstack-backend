@@ -46,7 +46,6 @@ public class BookCopyMapper {
     if (bookCopy.getPublisher() != null) {
       bookCopyEntity.setPublisher(publisherMapper.toEntity(bookCopy.getPublisher()));
     }
-
     return bookCopyEntity;
   }
 }
