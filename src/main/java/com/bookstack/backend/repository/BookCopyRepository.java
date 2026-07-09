@@ -23,4 +23,34 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
   List<JBookCopy> findByPriceRange(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
   List<JBookCopy> findByPublisherId(String publisherId);
+
+  @Query(
+      """
+      SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0)
+      FROM JBookCopy bc
+      LEFT JOIN bc.arrivalItems ai
+      LEFT JOIN bc.saleItems si
+      WHERE bc.id = :bookCopyId
+      """)
+  Integer calculateTotalStockByBookCopyId(@Param("bookCopyId") String bookCopyId);
+
+  @Query(
+      """
+        SELECT COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0)
+        FROM JBookCopy bc
+        LEFT JOIN bc.arrivalItems ai
+        LEFT JOIN bc.saleItems si
+        WHERE bc.book.id = :bookId
+      """)
+  Integer calculateTotalStockByBookId(@Param("bookId") String bookId);
+
+  @Query(
+      """
+      SELECT bc.id FROM JBookCopy bc
+      LEFT JOIN bc.arrivalItems ai
+      LEFT JOIN bc.saleItems si
+      GROUP BY bc.id
+      HAVING COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0) <= :threshold
+      """)
+  List<String> findBookCopyIdsWithLowStock(@Param("threshold") int threshold);
 }

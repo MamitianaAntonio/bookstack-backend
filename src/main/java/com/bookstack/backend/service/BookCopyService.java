@@ -28,7 +28,7 @@ public class BookCopyService {
   private final ArrivalItemRepository arrivalItemRepository;
   private final SaleItemRepository saleItemRepository;
 
-  private static final int LOW_STOCK_THRESHOLD = 5;
+  private static final int LOW_STOCK_THRESHOLD = 3;
 
   public List<BookCopy> findAll() {
     return mapper.toModel(repository.findAll());

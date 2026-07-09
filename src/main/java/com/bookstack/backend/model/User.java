@@ -1,9 +1,11 @@
 package com.bookstack.backend.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @AllArgsConstructor
+@SuperBuilder
 public abstract sealed class User permits Admin, Customer {
   private final String id;
   private final String firstName;

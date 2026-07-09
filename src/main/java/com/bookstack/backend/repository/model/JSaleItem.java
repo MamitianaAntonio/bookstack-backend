@@ -1,8 +1,7 @@
 package com.bookstack.backend.repository.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -10,6 +9,9 @@ import org.hibernate.annotations.UuidGenerator;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Builder
+@Getter
 public class JSaleItem {
   @Id @UuidGenerator private String id;
 
