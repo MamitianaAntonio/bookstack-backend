@@ -5,10 +5,8 @@ import com.bookstack.backend.enums.Status;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 @Table(name = "sale")
@@ -17,6 +15,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class JSale {
   @Id @UuidGenerator private String id;
 

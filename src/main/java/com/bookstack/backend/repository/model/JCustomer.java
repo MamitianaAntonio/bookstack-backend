@@ -2,10 +2,8 @@ package com.bookstack.backend.repository.model;
 
 import jakarta.persistence.*;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 @Table(name = "customer")
@@ -14,6 +12,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class JCustomer {
   @Id @UuidGenerator private String id;
 
