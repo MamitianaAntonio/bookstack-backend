@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,5 +77,10 @@ public class SaleService {
             }
         JSale savedSale = saleRepository.save(jsale);
         return mapper.toModel(savedSale);
+    }
+
+    public BigDecimal getTotalRevenueByGenre(String genre) {
+        BigDecimal revenue = saleRepository.getTotalRevenueByGenreName(genre);
+        return revenue != null ? revenue : BigDecimal.ZERO;
     }
 }
