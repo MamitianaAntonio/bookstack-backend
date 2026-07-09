@@ -2,13 +2,13 @@ package com.bookstack.backend.endpoint.rest.controller.health;
 
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
+import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.service.StockService;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/stock")
@@ -28,9 +28,7 @@ public class StockController {
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/low")
-  public List<BookStockResponseDTO> getLowStock(
-          @RequestParam(defaultValue = "3") int threshold
-  ) {
+  public List<StockResponseDTO> getLowStock(@RequestParam(defaultValue = "3") int threshold) {
     return stockService.getLowStock(threshold);
   }
 }

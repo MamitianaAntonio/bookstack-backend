@@ -44,12 +44,13 @@ public interface BookCopyRepository extends JpaRepository<JBookCopy, String> {
       """)
   Integer calculateTotalStockByBookId(@Param("bookId") String bookId);
 
-  @Query("""
-    SELECT bc.id FROM JBookCopy bc
-    LEFT JOIN bc.arrivalItems ai
-    LEFT JOIN bc.saleItems si
-    GROUP BY bc.id
-    HAVING COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0) <= :threshold
-    """)
+  @Query(
+      """
+      SELECT bc.id FROM JBookCopy bc
+      LEFT JOIN bc.arrivalItems ai
+      LEFT JOIN bc.saleItems si
+      GROUP BY bc.id
+      HAVING COALESCE(SUM(ai.quantity), 0) - COALESCE(SUM(si.quantity), 0) <= :threshold
+      """)
   List<String> findBookCopyIdsWithLowStock(@Param("threshold") int threshold);
 }

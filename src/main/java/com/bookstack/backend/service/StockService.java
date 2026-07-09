@@ -2,6 +2,7 @@ package com.bookstack.backend.service;
 
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
+import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.enums.StockStatus;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.repository.BookCopyRepository;
@@ -68,39 +69,30 @@ public class StockService {
 
   private StockStatus computeStatus(int stock) {
     if (stock <= 0) return StockStatus.OUT_OF_STOCK;
-    if (stock <= 3)  return StockStatus.LOW;
+    if (stock <= 3) return StockStatus.LOW;
     return StockStatus.AVAILABLE;
   }
 
-  public List<BookStockResponseDTO> getLowStock(int threshold) {
+  public List<StockResponseDTO> getLowStock(int threshold) {
     List<String> lowStockIds = bookCopyRepository.findBookCopyIdsWithLowStock(threshold);
 
     return lowStockIds.stream()
-            .map(bookCopyId -> {
+        .map(
+            bookCopyId -> {
               JBookCopy copy =
-                      bookCopyRepository
-                              .findById(bookCopyId)
-                              .orElseThrow(
-                                      () -> new NotFoundException("BookCopy with Id : " + bookCopyId + " not found"));
+                  bookCopyRepository
+                      .findById(bookCopyId)
+                      .orElseThrow(
+                          () ->
+                              new NotFoundException(
+                                  "BookCopy with Id : " + bookCopyId + " not found"));
 
               Integer stock = bookCopyRepository.calculateTotalStockByBookCopyId(bookCopyId);
               int stockValue = stock != null ? stock : 0;
 
-              FormatStockDTO formatStock = new FormatStockDTO(
-                      copy.getId(),
-                      copy.getBook().getTitle(),
-                      copy.getFormat(),
-                      copy.getLanguage(),
-                      stockValue
-              );
-              return new BookStockResponseDTO(
-                      copy.getBook().getId(),
-                      copy.getBook().getTitle(),
-                      copy.getBook().getIsbn(),
-                      stockValue,
-                      List.of(formatStock)
-              );
+              return new StockResponseDTO(
+                  copy.getId(), copy.getBook().getTitle(), stockValue, computeStatus(stockValue));
             })
-            .toList();
+        .toList();
   }
 }
