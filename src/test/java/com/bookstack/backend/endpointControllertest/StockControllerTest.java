@@ -118,39 +118,33 @@ public class StockControllerTest {
   }
 
   @Test
-  void getLowStock_shouldReturn_OK_withDefaultThreshold() throws Exception{
-    StockResponseDTO lowStockItem = new StockResponseDTO(
-            bookCopyId,
-            "The Great Gasby",
-            2,
-            StockStatus.LOW
-    );
+  void getLowStock_shouldReturn_OK_withDefaultThreshold() throws Exception {
+    StockResponseDTO lowStockItem =
+        new StockResponseDTO(bookCopyId, "The Great Gasby", 2, StockStatus.LOW);
     when(stockService.getLowStock(3)).thenReturn(List.of(lowStockItem));
 
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookCopyId").value(bookCopyId))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(2))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("LOW"));
+        .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookCopyId").value(bookCopyId))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(2))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("LOW"));
   }
 
   @Test
   void getLowStock_shouldReturn_OK_withCustomThreshold() throws Exception {
-    StockResponseDTO item1 = new StockResponseDTO(
-            bookCopyId, "The Great Gatsby", 2, StockStatus.LOW
-    );
-    StockResponseDTO item2 = new StockResponseDTO(
-            UUID.randomUUID().toString(), "L'Étranger", 4, StockStatus.LOW
-    );
+    StockResponseDTO item1 =
+        new StockResponseDTO(bookCopyId, "The Great Gatsby", 2, StockStatus.LOW);
+    StockResponseDTO item2 =
+        new StockResponseDTO(UUID.randomUUID().toString(), "L'Étranger", 4, StockStatus.LOW);
     when(stockService.getLowStock(5)).thenReturn(List.of(item1, item2));
 
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/stock/low?threshold=5"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
+        .perform(MockMvcRequestBuilders.get("/api/stock/low?threshold=5"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
   }
 
   @Test
@@ -158,28 +152,24 @@ public class StockControllerTest {
     when(stockService.getLowStock(3)).thenReturn(List.of());
 
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
+        .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
   }
 
   @Test
   void getLowStock_shouldReturn_KO_with_negativeStock() throws Exception {
-    StockResponseDTO negative =  new StockResponseDTO(
-            bookCopyId,
-            "Things fall apart",
-            -3,
-            StockStatus.OUT_OF_STOCK
-    );
+    StockResponseDTO negative =
+        new StockResponseDTO(bookCopyId, "Things fall apart", -3, StockStatus.OUT_OF_STOCK);
 
     when(stockService.getLowStock(3)).thenReturn(List.of(negative));
 
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/stock/low"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(-3))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("OUT_OF_STOCK"));
+        .perform(MockMvcRequestBuilders.get("/api/stock/low"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(-3))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("OUT_OF_STOCK"));
   }
 }
