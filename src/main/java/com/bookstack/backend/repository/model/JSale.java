@@ -35,6 +35,10 @@ public class JSale {
   @JoinColumn(name = "customer_id", nullable = false)
   private JCustomer customer;
 
-  @OneToMany(mappedBy = "sale")
+  @OneToMany(
+      mappedBy = "sale",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private List<JSaleItem> saleItems;
 }
