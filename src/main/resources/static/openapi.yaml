@@ -801,7 +801,7 @@ paths:
   /genres/revenue:
     parameters:
       - name: genre
-        in: path
+        in: query
         required: true
         schema:
           type: string
