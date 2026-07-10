@@ -41,8 +41,9 @@ public class GenreController {
     service.delete(id);
   }
 
-  @GetMapping("/genre/revenue")
-  public ResponseEntity<?> getTotalRevenueByGenre(@RequestParam String genre) {
+  @GetMapping("/genres/revenue")
+  public ResponseEntity<?> getTotalRevenueByGenre(
+      @RequestParam(name = "genre", required = true) String genre) {
     try {
       BigDecimal revenue = saleService.getTotalRevenueByGenre(genre);
       return ResponseEntity.ok(
