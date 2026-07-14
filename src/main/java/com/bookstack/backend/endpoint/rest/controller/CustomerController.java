@@ -1,6 +1,6 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
-import com.bookstack.backend.dto.SaleRequest;
+import com.bookstack.backend.dto.request.SaleRequest;
 import com.bookstack.backend.exception.BadRequestException;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.model.Sale;

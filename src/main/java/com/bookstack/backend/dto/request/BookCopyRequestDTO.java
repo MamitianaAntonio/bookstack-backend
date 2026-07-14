@@ -1,4 +1,4 @@
-package com.bookstack.backend.dto;
+package com.bookstack.backend.dto.request;
 
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;

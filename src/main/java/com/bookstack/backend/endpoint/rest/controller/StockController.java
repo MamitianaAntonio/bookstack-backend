@@ -1,4 +1,4 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;

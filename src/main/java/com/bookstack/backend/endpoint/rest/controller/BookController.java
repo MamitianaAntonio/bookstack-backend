@@ -1,6 +1,6 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
-import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.dto.request.BookRequestDTO;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.service.BookService;
 import java.util.List;

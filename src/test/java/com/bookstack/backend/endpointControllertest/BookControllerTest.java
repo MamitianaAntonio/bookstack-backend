@@ -3,8 +3,8 @@ package com.bookstack.backend.endpointControllertest;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-import com.bookstack.backend.dto.BookRequestDTO;
-import com.bookstack.backend.endpoint.rest.controller.health.BookController;
+import com.bookstack.backend.dto.request.BookRequestDTO;
+import com.bookstack.backend.endpoint.rest.controller.BookController;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.exception.GlobalExceptionHandler;
 import com.bookstack.backend.exception.NotFoundException;

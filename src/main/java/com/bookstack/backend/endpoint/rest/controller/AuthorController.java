@@ -1,4 +1,4 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
 import com.bookstack.backend.model.Author;
 import com.bookstack.backend.service.AuthorService;

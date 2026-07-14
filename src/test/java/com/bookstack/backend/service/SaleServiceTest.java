@@ -5,9 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-import com.bookstack.backend.dto.BookCopyRequest;
-import com.bookstack.backend.dto.SaleItemRequest;
-import com.bookstack.backend.dto.SaleRequest;
+import com.bookstack.backend.dto.request.BookCopyRequest;
+import com.bookstack.backend.dto.request.SaleItemRequest;
+import com.bookstack.backend.dto.request.SaleRequest;
 import com.bookstack.backend.exception.BadRequestException;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.SaleMapper;
