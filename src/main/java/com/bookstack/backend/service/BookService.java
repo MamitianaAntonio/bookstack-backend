@@ -1,6 +1,6 @@
 package com.bookstack.backend.service;
 
-import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.dto.request.BookRequestDTO;
 import com.bookstack.backend.exception.AlreadyExistsException;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.mapper.BookMapper;

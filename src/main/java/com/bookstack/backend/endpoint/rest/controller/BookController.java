@@ -1,17 +1,21 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
-import com.bookstack.backend.dto.BookRequestDTO;
+import com.bookstack.backend.dto.BookInfoDTO;
+import com.bookstack.backend.dto.request.BookRequestDTO;
 import com.bookstack.backend.model.Book;
+import com.bookstack.backend.service.BookExternalService;
 import com.bookstack.backend.service.BookService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 public class BookController {
   private final BookService service;
+  private final BookExternalService bookExternalService;
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/books")
@@ -40,5 +44,14 @@ public class BookController {
   @DeleteMapping("/books/{id}")
   public void delete(@PathVariable String id) {
     service.delete(id);
+  }
+
+  @GetMapping("/books/search")
+  public ResponseEntity<BookInfoDTO> search(@RequestParam String isbn) {
+    String cleanedIsbn = isbn.replaceAll("[\\s-]", "");
+
+    BookInfoDTO bookInfo = bookExternalService.getBookInfoDTO(cleanedIsbn);
+
+    return ResponseEntity.ok(bookInfo);
   }
 }

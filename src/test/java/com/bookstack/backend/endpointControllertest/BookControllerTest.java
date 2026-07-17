@@ -3,14 +3,16 @@ package com.bookstack.backend.endpointControllertest;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-import com.bookstack.backend.dto.BookRequestDTO;
-import com.bookstack.backend.endpoint.rest.controller.health.BookController;
+import com.bookstack.backend.dto.BookInfoDTO;
+import com.bookstack.backend.dto.request.BookRequestDTO;
+import com.bookstack.backend.endpoint.rest.controller.BookController;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.exception.GlobalExceptionHandler;
 import com.bookstack.backend.exception.NotFoundException;
 import com.bookstack.backend.model.Author;
 import com.bookstack.backend.model.Book;
 import com.bookstack.backend.model.Genre;
+import com.bookstack.backend.service.BookExternalService;
 import com.bookstack.backend.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -35,6 +37,8 @@ public class BookControllerTest {
 
   @MockBean private BookService bookService;
 
+  @MockBean private BookExternalService bookExternalService;
+
   private Book lePetitPrince;
   private Book javaPourLesNuls;
   private Author dev;
@@ -43,6 +47,7 @@ public class BookControllerTest {
   private Genre education;
   private BookRequestDTO bookRequestDTO;
   private BookRequestDTO updateDTO;
+  private BookInfoDTO bookInfoDTO;
 
   @BeforeEach
   void setUp() {
@@ -119,6 +124,19 @@ public class BookControllerTest {
             .authorIds(List.of(antoine.getId()))
             .genreIds(List.of(fiction.getId()))
             .build();
+
+    bookInfoDTO =
+        BookInfoDTO.builder()
+            .title("Le Petit Prince")
+            .authors("Antoine de Saint-Exupéry")
+            .isbn("978-0156012195")
+            .source("OPEN_LIBRARY")
+            .description("A poetic story about friendship, love and life lessons")
+            .pageCount(93)
+            .publishDate("6 Avril 1943")
+            .imageUrl("https://covers.openlibrary.org/b/id/7268667-L.jpg")
+            .openLibraryUrl("https://openlibrary.org/books/OL25435833M/The_Little_Prince")
+            .build();
   }
 
   @Test
@@ -193,5 +211,26 @@ public class BookControllerTest {
         .perform(MockMvcRequestBuilders.delete("/books/" + lePetitPrince.getId()))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isNoContent());
+  }
+
+  @Test
+  void searchBook_shouldReturn_ok() throws Exception {
+    when(bookExternalService.getBookInfoDTO(lePetitPrince.getIsbn())).thenReturn(bookInfoDTO);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books/search").param("isbn", "9780156012195"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+  @Test
+  void searchBook_shouldReturn_404_whenBookNotFound() throws Exception {
+    when(bookExternalService.getBookInfoDTO("9999023981999"))
+        .thenThrow(new NotFoundException("Book not found"));
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books/search").param("isbn", "9999023981999"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

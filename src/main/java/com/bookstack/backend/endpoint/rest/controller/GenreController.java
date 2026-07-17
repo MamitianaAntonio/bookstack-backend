@@ -1,4 +1,4 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
 import com.bookstack.backend.model.Genre;
 import com.bookstack.backend.service.GenreService;

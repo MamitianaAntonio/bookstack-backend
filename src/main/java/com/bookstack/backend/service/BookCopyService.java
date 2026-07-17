@@ -1,6 +1,6 @@
 package com.bookstack.backend.service;
 
-import com.bookstack.backend.dto.BookCopyRequestDTO;
+import com.bookstack.backend.dto.request.BookCopyRequestDTO;
 import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
