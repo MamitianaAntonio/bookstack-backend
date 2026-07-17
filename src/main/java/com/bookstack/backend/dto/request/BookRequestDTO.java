@@ -1,4 +1,4 @@
-package com.bookstack.backend.dto;
+package com.bookstack.backend.dto.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
-package com.bookstack.backend.endpoint.rest.controller.health;
+package com.bookstack.backend.endpoint.rest.controller;
 
-import com.bookstack.backend.dto.BookCopyRequestDTO;
+import com.bookstack.backend.dto.request.BookCopyRequestDTO;
 import com.bookstack.backend.dto.response.StockResponseDTO;
 import com.bookstack.backend.model.BookCopy;
 import com.bookstack.backend.service.BookCopyService;

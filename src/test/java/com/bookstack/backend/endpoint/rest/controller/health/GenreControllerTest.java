@@ -3,6 +3,7 @@ package com.bookstack.backend.endpoint.rest.controller.health;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import com.bookstack.backend.endpoint.rest.controller.GenreController;
 import com.bookstack.backend.service.SaleService;
 import java.math.BigDecimal;
 import java.util.Map;

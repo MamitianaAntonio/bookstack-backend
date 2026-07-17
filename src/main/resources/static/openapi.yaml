@@ -288,6 +288,41 @@ components:
           format: date-time
           example: 2025-07-07T23:59:59Z
 
+    BookInfoDTO:
+      type: object
+      description: Book information from external sources (Google Books, Open Library)
+      properties:
+        title:
+          type: string
+          example: Le Petit Prince
+        authors:
+          type: string
+          example: Antoine de Saint-Exupéry
+        isbn:
+          type: string
+          example: 978-2070612758
+        source:
+          type: string
+          description: Data source (Google Books or Open Library)
+          example: GOOGLE
+        description:
+          type: string
+          example: Un petit prince voyage de planète en planète...
+        publishDate:
+          type: string
+          example: 1943-04-06
+        pageCount:
+          type: integer
+          example: 96
+        imageUrl:
+          type: string
+          format: uri
+          example: "https://books.google.com/books/content?id=..."
+        openLibraryUrl:
+          type: string
+          format: uri
+          example: "https://openlibrary.org/books/OL..."
+
 
     ErrorBody:
       type: object
@@ -441,6 +476,40 @@ paths:
           description: Book deleted
         404:
           $ref: '#/components/responses/404NotFound'
+        500:
+          $ref: '#/components/responses/500InternalError'
+
+  /books/search:
+    get:
+      tags: [ Books ]
+      summary: Search book by ISBN from external sources
+      description: Search for book information using ISBN from Google Books and Open Library APIs
+      parameters:
+        - name: isbn
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 978-2070612758
+          description: ISBN number of the book
+      responses:
+        200:
+          description: Book information found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookInfoDTO'
+        400:
+          $ref: '#/components/responses/400BadRequest'
+        404:
+          description: Book not found in external sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookInfoDTO'
+                example:
+                  source: NOT_FOUND
+                  isbn: 978-2070612758
         500:
           $ref: '#/components/responses/500InternalError'
 

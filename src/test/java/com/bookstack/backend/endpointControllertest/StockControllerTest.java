@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 import com.bookstack.backend.dto.FormatStockDTO;
 import com.bookstack.backend.dto.response.BookStockResponseDTO;
 import com.bookstack.backend.dto.response.StockResponseDTO;
-import com.bookstack.backend.endpoint.rest.controller.health.StockController;
+import com.bookstack.backend.endpoint.rest.controller.StockController;
 import com.bookstack.backend.enums.Format;
 import com.bookstack.backend.enums.Language;
 import com.bookstack.backend.enums.StockStatus;
